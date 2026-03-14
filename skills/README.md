@@ -12,19 +12,23 @@ Claude デスクトップアプリ (Cowork) 用のカスタムスキル集です
 
 ### 個別スキル（子スキル）
 
-| スキル | 説明 | 出力 | トリガー例 |
-|--------|------|------|-----------|
-| [req-estimate](./req-estimate/) | 要件定義書から設計・工数見積もりを生成 | `customer-summary.md` `design-doc.md` | 「見積もって」「設計して」 |
-| [db-design](./db-design/) | 設計書・要件書からDB設計書を生成 | `db-design.md` | 「DB設計して」「ER図作って」 |
-| [req-investigate](./req-investigate/) | 不明点を調査し規約確認・ヒアリング事項を整理 | `investigation-report.md` | 「規約を調べて」「不明点まとめて」 |
+| スキル | 対象 | 説明 | 出力 | トリガー例 |
+|--------|------|------|------|-----------|
+| [req-estimate](./req-estimate/) | 実装者 | 要件定義書から設計・工数見積もりを生成 | `customer-summary.md` `design-doc.md` | 「見積もって」「設計して」 |
+| [db-design](./db-design/) | 実装者 | 設計書・要件書からDB設計書を生成 | `db-design.md` | 「DB設計して」「ER図作って」 |
+| [detail-design](./detail-design/) | 実装者 | シーケンス図・API仕様・エラーハンドリングの詳細設計書を生成 | `detail-design.md` | 「詳細設計して」「API仕様まとめて」 |
+| [proposal](./proposal/) | 顧客・経営者 | 費用・Ganttチャート付きの意思決定向け提案書を生成 | `proposal.md` | 「提案書作って」「お客さんに見せる資料」 |
+| [req-investigate](./req-investigate/) | 実装者 | 不明点を調査し規約確認・ヒアリング事項を整理 | `investigation-report.md` | 「規約を調べて」「不明点まとめて」 |
 
 ### スキルの関係図
 
 ```
 req-full（親・ワンショット）
-├── req-estimate  → customer-summary.md + design-doc.md
-├── db-design     → db-design.md
-└── req-investigate → investigation-report.md
+├── req-estimate   → customer-summary.md + design-doc.md  （実装者向け）
+├── db-design      → db-design.md                         （実装者向け）
+├── detail-design  → detail-design.md                     （実装者向け）
+├── proposal       → proposal.md                          （顧客・経営者向け）
+└── req-investigate → investigation-report.md             （調査・確認）
 ```
 
 ---
@@ -39,30 +43,34 @@ skills/
 │   ├── req-full.skill
 │   ├── req-estimate.skill
 │   ├── db-design.skill
+│   ├── detail-design.skill
+│   ├── proposal.skill
 │   └── req-investigate.skill
 │
-├── req-full/               # 親スキル（ワンショット）
+├── req-full/               # 親スキル（ワンショット・全スキル実行）
 │   └── SKILL.md
 │
-├── req-estimate/           # 設計書・工数見積もり
+├── req-estimate/           # 設計書・工数見積もり（実装者向け）
 │   ├── SKILL.md            # ★ スキルの本体（プロンプト）
 │   ├── references/
 │   │   └── estimation-guide.md   # 工数見積もり参考資料
 │   └── evals/
-│       ├── evals.json
-│       └── test-case-*.md
 │
-├── db-design/              # DB設計書
+├── db-design/              # DB設計書（実装者向け）
 │   ├── SKILL.md
 │   └── evals/
-│       ├── evals.json
-│       └── test-case-*.md
+│
+├── detail-design/          # 詳細設計書 シーケンス図・API仕様（実装者向け）
+│   ├── SKILL.md
+│   └── evals/
+│
+├── proposal/               # 提案書 費用・Ganttチャート（顧客・経営者向け）
+│   ├── SKILL.md
+│   └── evals/
 │
 └── req-investigate/        # 規約調査・ヒアリング事項
     ├── SKILL.md
     └── evals/
-        ├── evals.json
-        └── test-case-*.md
 ```
 
 ---
@@ -115,16 +123,17 @@ cd skills/
 bash install.sh
 
 # または個別にパッケージ
-bash install.sh req-full
 bash install.sh req-estimate
 bash install.sh db-design
+bash install.sh detail-design
+bash install.sh proposal
 bash install.sh req-investigate
+bash install.sh req-full
 ```
 
 `dist/` に生成された `.skill` ファイルを Claude デスクトップアプリにドラッグ&ドロップしてインストールします。
 
-> **初回インストール時の推奨順序**: `req-estimate` → `db-design` → `req-investigate` → `req-full`
-> （req-full は子スキルを参照するため、子スキルを先にインストールしておく）
+> **初回インストール時の推奨順序**: 子スキル（req-estimate → db-design → detail-design → proposal → req-investigate）を先にインストールしてから `req-full` をインストールしてください。req-full は起動時に子スキルの SKILL.md を参照します。
 
 ---
 
