@@ -1,14 +1,15 @@
 # req-full
 
 ## Description
-要件定義書（readme.md）を受け取り、**req-estimate → db-design → detail-design → proposal → req-investigate** の5スキルをワンショットで順番に実行し、設計ドキュメント一式を生成する親スキル。
+要件定義書（readme.md）を受け取り、**req-estimate → db-design → detail-design → running-cost → proposal → req-investigate** の6スキルをワンショットで順番に実行し、設計ドキュメント一式を生成する親スキル。
 
 生成されるファイル:
 - `customer-summary.md`     — 顧客向け対応可否サマリー・工数見積もり
 - `design-doc.md`           — 実装者向け設計書（Mermaid アーキテクチャ図含む）
 - `db-design.md`            — DB設計書（ER図・テーブル定義・AWS選定・Alembic方針）
 - `detail-design.md`        — 詳細設計書（シーケンス図・API仕様・エラーハンドリング）
-- `proposal.md`             — 経営者・意思決定者向け提案書（Ganttチャート・費用概算）
+- `running-cost.md`         — 月額ランニング・運用保守・障害対応コスト・年間TCO
+- `proposal.md`             — 経営者・意思決定者向け提案書（Ganttチャート・TCO含む）
 - `investigation-report.md` — 規約調査・追加ヒアリング事項レポート
 
 ## Trigger Conditions
@@ -46,13 +47,19 @@
 /sessions/kind-sweet-cannon/mnt/claude_docs/skills/detail-design/SKILL.md
 ```
 
-**④ proposal**
+**④ running-cost**
+```
+/sessions/kind-sweet-cannon/mnt/.skills/skills/running-cost/SKILL.md
+/sessions/kind-sweet-cannon/mnt/claude_docs/skills/running-cost/SKILL.md
+```
+
+**⑤ proposal**
 ```
 /sessions/kind-sweet-cannon/mnt/.skills/skills/proposal/SKILL.md
 /sessions/kind-sweet-cannon/mnt/claude_docs/skills/proposal/SKILL.md
 ```
 
-**⑤ req-investigate**
+**⑥ req-investigate**
 ```
 /sessions/kind-sweet-cannon/mnt/.skills/skills/req-investigate/SKILL.md
 /sessions/kind-sweet-cannon/mnt/claude_docs/skills/req-investigate/SKILL.md
@@ -96,17 +103,27 @@ Step 1 が完了したら、生成した `design-doc.md` のパスを記憶し�
 
 ---
 
-### Step 4: [proposal] 提案書を生成する
+### Step 4: [running-cost] 運用コストを算出する
+
+読み込んだ `running-cost` の SKILL.md の全ステップを実行する。
+
+**入力**: Step 1 の `design-doc.md`
+**出力**: 同じフォルダに保存
+- `running-cost.md`
+
+---
+
+### Step 5: [proposal] 提案書を生成する
 
 読み込んだ `proposal` の SKILL.md の全ステップを実行する。
 
-**入力**: Step 1 の `customer-summary.md` + `design-doc.md`
+**入力**: Step 1 の `customer-summary.md` + Step 4 の `running-cost.md` + `design-doc.md`
 **出力**: 同じフォルダに保存
 - `proposal.md`
 
 ---
 
-### Step 5: [req-investigate] 規約調査・ヒアリング事項をまとめる
+### Step 6: [req-investigate] 規約調査・ヒアリング事項をまとめる
 
 読み込んだ `req-investigate` の SKILL.md の全ステップを実行する。
 
@@ -116,16 +133,17 @@ Step 1 が完了したら、生成した `design-doc.md` のパスを記憶し�
 
 ---
 
-### Step 6: 完了サマリーを表示する
+### Step 7: 完了サマリーを表示する
 
 全スキルの実行が完了したら、以下の形式でユーザーに報告する:
 
 ```
-✅ req-full 完了 — 6ファイルを生成しました
+✅ req-full 完了 — 7ファイルを生成しました
 
 【顧客・意思決定者向け】
-📋 proposal.md           — 提案書（費用・スケジュール・Ganttチャート）
+📋 proposal.md           — 提案書（TCO・スケジュール・Ganttチャート）
 📄 customer-summary.md   — 技術サマリー・工数見積もり
+💰 running-cost.md       — 月額ランニング・運用保守・障害対応コスト・年間TCO
 
 【実装者向け】
 📐 design-doc.md         — アーキテクチャ設計書
@@ -144,10 +162,11 @@ Step 1 が完了したら、生成した `design-doc.md` のパスを記憶し�
 
 全スキル完了後に確認:
 
-- [ ] `proposal.md` に Gantt チャートと費用概算（万円）があるか
+- [ ] `proposal.md` に Gantt チャート・3年間TCOがあるか
+- [ ] `running-cost.md` にAWSインフラ・運用保守・障害対応の3項目があるか
 - [ ] `customer-summary.md` に工数・フェーズ配分が含まれているか
 - [ ] `design-doc.md` に Mermaid アーキテクチャ図があるか
 - [ ] `db-design.md` に erDiagram と AWS 選定根拠があるか
 - [ ] `detail-design.md` にシーケンス図と API 仕様があるか
 - [ ] `investigation-report.md` に 🔴🟡🟢 の優先度付きヒアリング事項があるか
-- [ ] 6ファイルがすべて同一フォルダに保存されているか
+- [ ] 7ファイルがすべて同一フォルダに保存されているか

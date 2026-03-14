@@ -17,18 +17,20 @@ Claude デスクトップアプリ (Cowork) 用のカスタムスキル集です
 | [req-estimate](./req-estimate/) | 実装者 | 要件定義書から設計・工数見積もりを生成 | `customer-summary.md` `design-doc.md` | 「見積もって」「設計して」 |
 | [db-design](./db-design/) | 実装者 | 設計書・要件書からDB設計書を生成 | `db-design.md` | 「DB設計して」「ER図作って」 |
 | [detail-design](./detail-design/) | 実装者 | シーケンス図・API仕様・エラーハンドリングの詳細設計書を生成 | `detail-design.md` | 「詳細設計して」「API仕様まとめて」 |
-| [proposal](./proposal/) | 顧客・経営者 | 費用・Ganttチャート付きの意思決定向け提案書を生成 | `proposal.md` | 「提案書作って」「お客さんに見せる資料」 |
+| [running-cost](./running-cost/) | 顧客・経営者 | 月額AWS費用・運用保守・障害対応コスト・年間TCOを算出 | `running-cost.md` | 「ランニングコスト出して」「TCO計算して」 |
+| [proposal](./proposal/) | 顧客・経営者 | 費用・Ganttチャート・TCO付きの意思決定向け提案書を生成 | `proposal.md` | 「提案書作って」「お客さんに見せる資料」 |
 | [req-investigate](./req-investigate/) | 実装者 | 不明点を調査し規約確認・ヒアリング事項を整理 | `investigation-report.md` | 「規約を調べて」「不明点まとめて」 |
 
 ### スキルの関係図
 
 ```
 req-full（親・ワンショット）
-├── req-estimate   → customer-summary.md + design-doc.md  （実装者向け）
-├── db-design      → db-design.md                         （実装者向け）
-├── detail-design  → detail-design.md                     （実装者向け）
-├── proposal       → proposal.md                          （顧客・経営者向け）
-└── req-investigate → investigation-report.md             （調査・確認）
+├── req-estimate    → customer-summary.md + design-doc.md  （実装者向け）
+├── db-design       → db-design.md                         （実装者向け）
+├── detail-design   → detail-design.md                     （実装者向け）
+├── running-cost    → running-cost.md                      （顧客・経営者向け）
+├── proposal        → proposal.md ← running-cost.md を参照 （顧客・経営者向け）
+└── req-investigate → investigation-report.md              （調査・確認）
 ```
 
 ---
@@ -64,7 +66,11 @@ skills/
 │   ├── SKILL.md
 │   └── evals/
 │
-├── proposal/               # 提案書 費用・Ganttチャート（顧客・経営者向け）
+├── running-cost/           # 月額コスト・運用保守・障害対応・年間TCO（顧客・経営者向け）
+│   ├── SKILL.md
+│   └── evals/
+│
+├── proposal/               # 提案書 TCO・Ganttチャート（顧客・経営者向け）
 │   ├── SKILL.md
 │   └── evals/
 │
