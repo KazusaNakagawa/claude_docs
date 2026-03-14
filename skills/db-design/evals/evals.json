@@ -1,0 +1,82 @@
+{
+  "skill": "db-design",
+  "description": "DB設計スキルの評価: ER図・テーブル定義・AWS選定・マイグレーション方針の品質チェック",
+  "test_cases": [
+    {
+      "id": "tc1-ec-site",
+      "name": "ECサイト（raw要件書）",
+      "input_file": "test-case-1-ec-site.md",
+      "output_file": "db-design.md",
+      "expectations": [
+        {
+          "id": "e1",
+          "description": "erDiagram が含まれている",
+          "assertion": "出力に ```mermaid erDiagram が含まれること"
+        },
+        {
+          "id": "e2",
+          "description": "主要テーブルが網羅されている",
+          "assertion": "users / products / orders / order_items に相当するテーブルが定義されていること"
+        },
+        {
+          "id": "e3",
+          "description": "全テーブルに id / created_at / updated_at がある",
+          "assertion": "テーブル定義に id (UUID PK), created_at, updated_at が含まれること"
+        },
+        {
+          "id": "e4",
+          "description": "AWS DBサービス選定に根拠がある",
+          "assertion": "RDS / Aurora / DynamoDB のいずれかを選定し、その理由が記載されていること"
+        },
+        {
+          "id": "e5",
+          "description": "Alembic のマイグレーション方針が記載されている",
+          "assertion": "alembic revision / upgrade head 等のコマンドまたは運用フローが含まれること"
+        },
+        {
+          "id": "e6",
+          "description": "外部キーにインデックスが定義されている",
+          "assertion": "order_items.order_id や order_items.product_id 等の外部キーにインデックスが定義されていること"
+        }
+      ]
+    },
+    {
+      "id": "tc2-scout",
+      "name": "スカウト返信自動化（design-doc から）",
+      "input_file": "test-case-2-scout-design-doc.md",
+      "output_file": "db-design.md",
+      "expectations": [
+        {
+          "id": "e1",
+          "description": "erDiagram が含まれている",
+          "assertion": "出力に ```mermaid erDiagram が含まれること"
+        },
+        {
+          "id": "e2",
+          "description": "マルチアカウント設計が反映されている",
+          "assertion": "accounts または platform_accounts に相当するテーブルがあり、platform カラム（採用サービスA/採用サービスB）が含まれること"
+        },
+        {
+          "id": "e3",
+          "description": "メッセージと分類・返信が別テーブルで管理されている",
+          "assertion": "messages / classifications / replies （または相当するテーブル）が分離されていること"
+        },
+        {
+          "id": "e4",
+          "description": "DynamoDB vs RDS の比較・選定がある",
+          "assertion": "DynamoDBとRDS/Auroraの両方について言及し、どちらを選ぶか根拠付きで記載されていること"
+        },
+        {
+          "id": "e5",
+          "description": "テンプレート管理テーブルがある",
+          "assertion": "reply_templates または templates に相当するテーブルが定義されていること"
+        },
+        {
+          "id": "e6",
+          "description": "Alembicのマイグレーション方針が記載されている",
+          "assertion": "ECSでの本番適用方針（init containerまたはCodePipeline）が言及されていること"
+        }
+      ]
+    }
+  ]
+}

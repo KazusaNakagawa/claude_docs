@@ -1,0 +1,23 @@
+{
+  "skill_name": "req-investigate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "この設計書の不明点を調査してください。特に〇〇と△△の利用規約・自動操作の可否を調べて、ヒアリング事項もまとめてください。",
+      "expected_output": "investigation-report.md が生成される。〇〇・△△の規約について実際にWeb検索した結果が記載され、自動操作の可否が明確に示される。優先度付きのヒアリング事項リストがある。",
+      "files": ["evals/test-case-1-scout-design-doc.md"]
+    },
+    {
+      "id": 2,
+      "prompt": "設計書を見て、StripeとPayPayの規約・API制約を調べてください。ヒアリング事項もまとめてほしいです。",
+      "expected_output": "investigation-report.md が生成される。Stripe と PayPay の公式API・手数料・利用規約について調査結果が記載される。PayPay の法人契約条件について言及がある。",
+      "files": ["evals/test-case-2-payment-design-doc.md"]
+    },
+    {
+      "id": 3,
+      "prompt": "不明点を調査して追加ヒアリング事項をまとめてください。ClaudeのAPIがデータを学習に使うかどうかも確認してほしいです。",
+      "expected_output": "investigation-report.md が生成される。Anthropic のデータ利用ポリシー（学習に使われるかどうか）について実際に調べた結果が記載される。Confluence・Google Drive APIの制約も調査される。",
+      "files": ["evals/test-case-3-llm-design-doc.md"]
+    }
+  ]
+}

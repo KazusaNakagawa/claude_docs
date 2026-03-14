@@ -1,0 +1,13 @@
+# パッケージ済み .skill ファイル（git管理不要・バイナリ）
+skills/dist/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# エディタ
+.vscode/
+*.swp
+
+# 管理外のファイル
+_test*.md

@@ -1,0 +1,23 @@
+{
+  "skill_name": "req-estimate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "この要件定義書を見て、対応可否・設計方針・工数見積もりを出してください。顧客向けサマリーと実装者向け設計書の2つを作ってほしいです。",
+      "expected_output": "customer-summary.md と design-doc.md の2ファイルが生成される。実現可否が明確に判断されており、機能ごとの工数内訳とバッファが含まれる。顧客向けは非技術者でも読める文章になっている。",
+      "files": ["evals/test-case-1-simple-webapp.md"]
+    },
+    {
+      "id": 2,
+      "prompt": "添付の要件書をもとに見積もりと設計方針をまとめてください。対応できるか、どのくらいかかるかを判断してほしいです。",
+      "expected_output": "customer-summary.md と design-doc.md が生成される。複雑な要件に対してリスクや条件が明示され、マイクロサービス化・AI機能などについて技術的判断が含まれる。フェーズ分けの提案がある。",
+      "files": ["evals/test-case-2-complex-infra.md"]
+    },
+    {
+      "id": 3,
+      "prompt": "要件書を渡すので、まず実現できるか判断して、できるなら見積もりを出してください。",
+      "expected_output": "customer-summary.md と design-doc.md が生成される。曖昧な要件に対して不明点・確認事項が明確にリストアップされ、条件付き対応可能の判断とともに複数の選択肢（Slack埋め込み vs Webなど）への言及がある。",
+      "files": ["evals/test-case-3-ambiguous.md"]
+    }
+  ]
+}
