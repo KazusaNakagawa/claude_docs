@@ -37,7 +37,7 @@ Claude デスクトップアプリ (Cowork) 用のカスタムスキル集です
 
 ### スキルの関係図
 
-```
+```text
 req-full（親・ワンショット）
 │
 │  ── 上流工程 ──────────────────────────────────────────────────────
@@ -68,6 +68,9 @@ skills/
 │   ├── req-estimate.skill
 │   ├── db-design.skill
 │   ├── detail-design.skill
+│   ├── job-api-design.skill
+│   ├── running-cost.skill
+│   ├── ops-monitoring.skill
 │   ├── proposal.skill
 │   └── req-investigate.skill
 │

@@ -30,43 +30,43 @@
 読み込む順番と検索パス（上から順に試す）:
 
 **① req-estimate**
-```
+```text
 /sessions/kind-sweet-cannon/mnt/.skills/skills/req-estimate/SKILL.md
 /sessions/kind-sweet-cannon/mnt/claude_docs/skills/req-estimate/SKILL.md
 ```
 
 **② db-design**
-```
+```text
 /sessions/kind-sweet-cannon/mnt/.skills/skills/db-design/SKILL.md
 /sessions/kind-sweet-cannon/mnt/claude_docs/skills/db-design/SKILL.md
 ```
 
 **③ detail-design**
-```
+```text
 /sessions/kind-sweet-cannon/mnt/.skills/skills/detail-design/SKILL.md
 /sessions/kind-sweet-cannon/mnt/claude_docs/skills/detail-design/SKILL.md
 ```
 
 **④ running-cost**
-```
+```text
 /sessions/kind-sweet-cannon/mnt/.skills/skills/running-cost/SKILL.md
 /sessions/kind-sweet-cannon/mnt/claude_docs/skills/running-cost/SKILL.md
 ```
 
 **⑤ proposal**
-```
+```text
 /sessions/kind-sweet-cannon/mnt/.skills/skills/proposal/SKILL.md
 /sessions/kind-sweet-cannon/mnt/claude_docs/skills/proposal/SKILL.md
 ```
 
 **⑥ req-investigate**
-```
+```text
 /sessions/kind-sweet-cannon/mnt/.skills/skills/req-investigate/SKILL.md
 /sessions/kind-sweet-cannon/mnt/claude_docs/skills/req-investigate/SKILL.md
 ```
 
-> ⚠️ いずれかのスキルが見つからない場合は、その旨をユーザーに伝え、
-> 残りの見つかったスキルで処理を続行する。
+> ⚠️ いずれかのスキルが見つからない場合は、その旨と未実行スキル名をユーザーに伝え、
+> 残りの見つかったスキルで処理を続行する（完了時に「生成できたファイルのみ」を報告）。
 
 ---
 
@@ -137,8 +137,9 @@ Step 1 が完了したら、生成した `design-doc.md` のパスを記憶し�
 
 全スキルの実行が完了したら、以下の形式でユーザーに報告する:
 
-```
-✅ req-full 完了 — 7ファイルを生成しました
+```text
+✅ req-full 完了 — {生成済みファイル数}ファイルを生成しました
+⚠️ 未実行スキル: {未実行スキル名の一覧、または "なし"}
 
 【顧客・意思決定者向け】
 📋 proposal.md           — 提案書（TCO・スケジュール・Ganttチャート）
@@ -169,4 +170,4 @@ Step 1 が完了したら、生成した `design-doc.md` のパスを記憶し�
 - [ ] `db-design.md` に erDiagram と AWS 選定根拠があるか
 - [ ] `detail-design.md` にシーケンス図と API 仕様があるか
 - [ ] `investigation-report.md` に 🔴🟡🟢 の優先度付きヒアリング事項があるか
-- [ ] 7ファイルがすべて同一フォルダに保存されているか
+- [ ] 実行対象となった全ファイルが同一フォルダに保存されているか
