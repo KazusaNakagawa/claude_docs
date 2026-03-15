@@ -98,7 +98,7 @@ description: |
   SELECT job_id, job_type, status, started_at, NOW() - started_at AS elapsed
   FROM jobs
   WHERE status = 'RUNNING'
-    AND started_at < NOW() - INTERVAL '{タイムアウト時間}';
+    AND started_at < NOW() - INTERVAL '{タイムアウト時間}';  -- 例: '1 hour', '30 minutes'
   ```
 
 ### C. SLO サマリー確認（3分）

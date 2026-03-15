@@ -24,46 +24,17 @@
 
 ### Step 0: 子スキルの SKILL.md を読み込む
 
-以下の順番で **Read ツール** を使い、各子スキルの SKILL.md を読み込む。
-ファイルが見つからない場合は Glob で `**/SKILL.md` を検索して特定する。
+以下の順番で **Glob ツール** を使い、各子スキルの SKILL.md を検索して読み込む。
+`**/スキル名/SKILL.md` パターンで検索し、見つかったパスに対して Read ツールで読み込む。
 
-読み込む順番と検索パス（上から順に試す）:
+読み込む順番:
 
-**① req-estimate**
-```text
-/sessions/kind-sweet-cannon/mnt/.skills/skills/req-estimate/SKILL.md
-/sessions/kind-sweet-cannon/mnt/claude_docs/skills/req-estimate/SKILL.md
-```
-
-**② db-design**
-```text
-/sessions/kind-sweet-cannon/mnt/.skills/skills/db-design/SKILL.md
-/sessions/kind-sweet-cannon/mnt/claude_docs/skills/db-design/SKILL.md
-```
-
-**③ detail-design**
-```text
-/sessions/kind-sweet-cannon/mnt/.skills/skills/detail-design/SKILL.md
-/sessions/kind-sweet-cannon/mnt/claude_docs/skills/detail-design/SKILL.md
-```
-
-**④ running-cost**
-```text
-/sessions/kind-sweet-cannon/mnt/.skills/skills/running-cost/SKILL.md
-/sessions/kind-sweet-cannon/mnt/claude_docs/skills/running-cost/SKILL.md
-```
-
-**⑤ proposal**
-```text
-/sessions/kind-sweet-cannon/mnt/.skills/skills/proposal/SKILL.md
-/sessions/kind-sweet-cannon/mnt/claude_docs/skills/proposal/SKILL.md
-```
-
-**⑥ req-investigate**
-```text
-/sessions/kind-sweet-cannon/mnt/.skills/skills/req-investigate/SKILL.md
-/sessions/kind-sweet-cannon/mnt/claude_docs/skills/req-investigate/SKILL.md
-```
+1. `req-estimate` — `**/req-estimate/SKILL.md`
+2. `db-design` — `**/db-design/SKILL.md`
+3. `detail-design` — `**/detail-design/SKILL.md`
+4. `running-cost` — `**/running-cost/SKILL.md`
+5. `proposal` — `**/proposal/SKILL.md`
+6. `req-investigate` — `**/req-investigate/SKILL.md`
 
 > ⚠️ いずれかのスキルが見つからない場合は、その旨と未実行スキル名をユーザーに伝え、
 > 残りの見つかったスキルで処理を続行する（完了時に「生成できたファイルのみ」を報告）。

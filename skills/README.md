@@ -172,7 +172,14 @@ bash install.sh req-full
 
 `dist/` に生成された `.skill` ファイルを Claude デスクトップアプリにドラッグ&ドロップしてインストールします。
 
-> **初回インストール時の推奨順序**: 子スキル（req-estimate → db-design → detail-design → **job-api-design → ops-monitoring** → proposal → req-investigate）を先にインストールしてから `req-full` をインストールしてください。req-full は起動時に子スキルの SKILL.md を参照します。
+> **初回インストール時の推奨順序**:
+>
+> **req-full を使う場合**（依存スキルを先にインストール）:
+> req-estimate → db-design → detail-design → running-cost → proposal → req-investigate → **req-full**
+>
+> **独立スキル**（req-full とは独立して単体で使用可能）:
+> - `job-api-design` — 詳細設計フェーズで個別使用
+> - `ops-monitoring` — リリース後の運用フェーズで使用
 
 ---
 
