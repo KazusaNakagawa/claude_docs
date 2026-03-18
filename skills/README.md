@@ -8,23 +8,51 @@ Claude デスクトップアプリ (Cowork) 用のカスタムスキル集です
 
 | スキル | 説明 | トリガー例 |
 |--------|------|-----------|
-| [req-full](./req-full/) | 以下3スキルをまとめてワンショット実行 | 「一式作って」「全部出して」 |
+| [req-full](./req-full/) | 以下子スキルをまとめてワンショット実行 | 「一式作って」「全部出して」 |
 
 ### 個別スキル（子スキル）
 
-| スキル | 説明 | 出力 | トリガー例 |
-|--------|------|------|-----------|
-| [req-estimate](./req-estimate/) | 要件定義書から設計・工数見積もりを生成 | `customer-summary.md` `design-doc.md` | 「見積もって」「設計して」 |
-| [db-design](./db-design/) | 設計書・要件書からDB設計書を生成 | `db-design.md` | 「DB設計して」「ER図作って」 |
-| [req-investigate](./req-investigate/) | 不明点を調査し規約確認・ヒアリング事項を整理 | `investigation-report.md` | 「規約を調べて」「不明点まとめて」 |
+#### 上流工程（要件定義・提案）
+
+| スキル | 対象 | 説明 | 出力 | トリガー例 |
+|--------|------|------|------|-----------|
+| [req-estimate](./req-estimate/) | 実装者 | 要件定義書から設計・工数見積もりを生成 | `customer-summary.md` `design-doc.md` | 「見積もって」「設計して」 |
+| [req-investigate](./req-investigate/) | 実装者 | 不明点を調査し規約確認・ヒアリング事項を整理 | `investigation-report.md` | 「規約を調べて」「不明点まとめて」 |
+| [running-cost](./running-cost/) | 顧客・経営者 | 月額AWS費用・運用保守・障害対応コスト・年間TCOを算出 | `running-cost.md` | 「ランニングコスト出して」「TCO計算して」 |
+| [proposal](./proposal/) | 顧客・経営者 | 費用・Ganttチャート・TCO付きの意思決定向け提案書を生成 | `proposal.md` | 「提案書作って」「お客さんに見せる資料」 |
+
+#### 詳細設計（実装者向け）
+
+| スキル | 対象 | 説明 | 入力 | 出力 | トリガー例 |
+|--------|------|------|------|------|-----------|
+| [db-design](./db-design/) | 実装者 | 設計書・要件書からDB設計書を生成 | `design-doc.md` | `db-design.md` | 「DB設計して」「ER図作って」 |
+| [detail-design](./detail-design/) | 実装者 | シーケンス図・API仕様・エラーハンドリングの詳細設計書を生成 | `design-doc.md` `db-design.md` | `detail-design.md` | 「詳細設計して」「API仕様まとめて」 |
+| [job-api-design](./job-api-design/) | 実装者 | ジョブ処理・バッチ系APIのスキーマ/キュー/Worker/DLQ設計書を生成 | `detail-design.md` | `job-api-design.md` | 「ジョブ系APIの設計して」「SQS/Worker設計まとめて」 |
+
+#### 運用設計（運用担当者向け）
+
+| スキル | 対象 | 説明 | 入力 | 出力 | トリガー例 |
+|--------|------|------|------|------|-----------|
+| [ops-monitoring](./ops-monitoring/) | 運用担当者 | CloudWatch + Slack 通知を前提とした日次監視・DLQ確認・SLO管理の運用設計書を生成 | `job-api-design.md` `detail-design.md` | `ops-monitoring.md` | 「監視設計して」「日次チェック手順まとめて」「Slack通知の設計」 |
 
 ### スキルの関係図
 
-```
+```text
 req-full（親・ワンショット）
-├── req-estimate  → customer-summary.md + design-doc.md
-├── db-design     → db-design.md
-└── req-investigate → investigation-report.md
+│
+│  ── 上流工程 ──────────────────────────────────────────────────────
+├── req-estimate    → customer-summary.md + design-doc.md  （実装者向け）
+├── req-investigate → investigation-report.md              （調査・確認）
+├── running-cost    → running-cost.md                      （顧客・経営者向け）
+├── proposal        → proposal.md ← running-cost.md を参照 （顧客・経営者向け）
+│
+│  ── 詳細設計 ──────────────────────────────────────────────────────
+├── db-design       → db-design.md       ← design-doc.md
+├── detail-design   → detail-design.md   ← design-doc.md + db-design.md
+└── job-api-design  → job-api-design.md  ← detail-design.md        ★ NEW
+
+── 運用設計（req-full の外・リリース後に使う）────────────────────────
+   ops-monitoring   → ops-monitoring.md  ← job-api-design.md       ★ NEW
 ```
 
 ---
@@ -39,30 +67,47 @@ skills/
 │   ├── req-full.skill
 │   ├── req-estimate.skill
 │   ├── db-design.skill
+│   ├── detail-design.skill
+│   ├── job-api-design.skill
+│   ├── running-cost.skill
+│   ├── ops-monitoring.skill
+│   ├── proposal.skill
 │   └── req-investigate.skill
 │
-├── req-full/               # 親スキル（ワンショット）
+├── req-full/               # 親スキル（ワンショット・全スキル実行）
 │   └── SKILL.md
 │
-├── req-estimate/           # 設計書・工数見積もり
+├── req-estimate/           # 設計書・工数見積もり（実装者向け）
 │   ├── SKILL.md            # ★ スキルの本体（プロンプト）
 │   ├── references/
 │   │   └── estimation-guide.md   # 工数見積もり参考資料
 │   └── evals/
-│       ├── evals.json
-│       └── test-case-*.md
 │
-├── db-design/              # DB設計書
+├── db-design/              # DB設計書（実装者向け）
 │   ├── SKILL.md
 │   └── evals/
-│       ├── evals.json
-│       └── test-case-*.md
 │
-└── req-investigate/        # 規約調査・ヒアリング事項
-    ├── SKILL.md
-    └── evals/
-        ├── evals.json
-        └── test-case-*.md
+├── detail-design/          # 詳細設計書 シーケンス図・API仕様（実装者向け）
+│   ├── SKILL.md
+│   └── evals/
+│
+├── job-api-design/         # ジョブ処理API詳細設計 SQS/Worker/DLQ（実装者向け）★ NEW
+│   └── SKILL.md
+│
+├── running-cost/           # 月額コスト・運用保守・障害対応・年間TCO（顧客・経営者向け）
+│   ├── SKILL.md
+│   └── evals/
+│
+├── proposal/               # 提案書 TCO・Ganttチャート（顧客・経営者向け）
+│   ├── SKILL.md
+│   └── evals/
+│
+├── req-investigate/        # 規約調査・ヒアリング事項
+│   ├── SKILL.md
+│   └── evals/
+│
+└── ops-monitoring/         # 通常監視業務 CloudWatch+Slack 日次チェック（運用担当者向け）★ NEW
+    └── SKILL.md
 ```
 
 ---
@@ -110,21 +155,31 @@ open skills/req-estimate/evals/evals.json
 編集後、Claude デスクトップアプリに反映するには `.skill` ファイルにパッケージして再インストールします。
 
 ```bash
-# 全スキルを一括パッケージ
+# 全スキルを一括パッケージ（SKILL.md があるディレクトリを自動検出）
 cd skills/
 bash install.sh
 
 # または個別にパッケージ
-bash install.sh req-full
 bash install.sh req-estimate
 bash install.sh db-design
+bash install.sh detail-design
+bash install.sh job-api-design
+bash install.sh ops-monitoring
+bash install.sh proposal
 bash install.sh req-investigate
+bash install.sh req-full
 ```
 
 `dist/` に生成された `.skill` ファイルを Claude デスクトップアプリにドラッグ&ドロップしてインストールします。
 
-> **初回インストール時の推奨順序**: `req-estimate` → `db-design` → `req-investigate` → `req-full`
-> （req-full は子スキルを参照するため、子スキルを先にインストールしておく）
+> **初回インストール時の推奨順序**:
+>
+> **req-full を使う場合**（依存スキルを先にインストール）:
+> req-estimate → db-design → detail-design → running-cost → proposal → req-investigate → **req-full**
+>
+> **独立スキル**（req-full とは独立して単体で使用可能）:
+> - `job-api-design` — 詳細設計フェーズで個別使用
+> - `ops-monitoring` — リリース後の運用フェーズで使用
 
 ---
 

@@ -11,3 +11,4 @@ skills/dist/
 
 # 管理外のファイル
 _test*.md
+output/
