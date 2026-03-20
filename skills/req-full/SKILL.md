@@ -142,3 +142,5 @@ Step 1 が完了したら、生成した `design-doc.md` のパスを記憶し�
 - [ ] `detail-design.md` にシーケンス図と API 仕様があるか
 - [ ] `investigation-report.md` に 🔴🟡🟢 の優先度付きヒアリング事項があるか
 - [ ] 実行対象となった全ファイルが同一フォルダに保存されているか
+- [ ] `design-doc.md` のフロントエンド技術スタックに具体的なバージョンが明記されているか（WebSearch で確認した最新安定版を使用しているか）
+- [ ] `db-design.md` の erDiagram に FK UK 複合指定（構文エラー）がないか

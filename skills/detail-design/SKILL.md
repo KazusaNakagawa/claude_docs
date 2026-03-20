@@ -196,6 +196,36 @@ sequenceDiagram
 - ローカル開発用に `docker-compose.test.yml` でテスト用 DB / LocalStack を起動できる構成にする
 - テストデータは `fixtures/` または `factory_boy` で管理し、テスト間の独立性を保つ
 
+### Step 7.5: データ移行・インポート/エクスポート仕様を確認する（該当する場合）
+
+既存システム（iOS アプリ等）からのデータ移行や JSON インポート/エクスポートが要件に含まれる場合:
+
+**JSONキー名の確認**:
+- 実際のサンプルファイル（エクスポートデータ等）を必ず参照し、キー名を**そのまま**使用する
+- 自分でキー名を推測・命名しない（`translation` を `meaning` と間違える等の不一致が起きやすい）
+- 代表的なキー名の例（iOSアプリ系）:
+  ```json
+  {
+    "words": [{
+      "id": "uuid",
+      "word": "rarity",
+      "meaning": "珍しさ・希少性",
+      "phonetic": "ˈrɛrɪti",
+      "sentences": [{
+        "id": "uuid",
+        "english": "This is a rare opportunity.",
+        "japanese": "これは珍しい機会だ。",
+        "category": "一般的な使い方"
+      }]
+    }]
+  }
+  ```
+  → DBカラムとのマッピング例: `meaning` → `words.translation`、`english` → `sentences.sentence`、`japanese` → `sentences.translation`
+
+**重複チェックの基準**:
+- `id`（UUID）ベースを優先する（文字列フィールドは将来の変更・表記ゆれのリスクあり）
+- UUID が存在しない場合に限り、文字列フィールドによる重複チェックを採用し、その旨を設計書に明記する
+
 ### Step 8: detail-design.md を出力する
 
 ---
@@ -329,3 +359,5 @@ sequenceDiagram
 - [ ] **単体・結合・E2E の3種類がすべて記載されているか**
 - [ ] **CI への組み込み方針（GitHub Actions 等）が記載されているか**
 - [ ] 実装者が読んで迷う箇所がないか（曖昧な表現を避ける）
+- [ ] データインポート/エクスポートの仕様がある場合、実際のサンプルファイルのJSONキー名を確認して使用しているか
+- [ ] 重複チェックはUUIDベースか（文字列フィールドによる場合はその旨と理由を明記）
