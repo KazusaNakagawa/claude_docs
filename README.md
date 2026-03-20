@@ -8,7 +8,7 @@ Claude で試した内容をナレッジとして残すためのリポジトリ�
 
 ```bash
 claude_docs/
-├── output/          # req-full スキルの実行結果サンプル
+├── output/          # req-full スキルの実行結果サンプル（★git管理外）
 │   ├── case1/       # iOS版 EnglishLearnApp — スキル開発初期の出力（連番なし）
 │   ├── case2/       # iOS版 EnglishLearnApp — req-full スキルによる出力（01.〜07.）
 │   └── case3/       # Web版 EnglishLearnApp — React SPA 拡張時の出力（01.〜07.）
