@@ -186,30 +186,15 @@ echo "✓ Claude sessions renamed"
 CLAUDE_STARTUP_DELAY=15 /parallel-setup 2
 ```
 
-### 7. Auto-start Development
+### 7. Manual Development Start
 
-After renaming, send `/start` command to begin development:
+After attaching to the tmux session, manually run `/start` in each worker pane with the corresponding issue number:
 
-```bash
-# Configurable post-rename delay (default: 3 seconds)
-# Adjust POST_RENAME_DELAY if /rename takes longer to process
-POST_RENAME_DELAY=${POST_RENAME_DELAY:-3}
+- Worker 0: `/start 79`
+- Worker 1: `/start 80`
+- Worker 2 (if using 3 workers): `/start 102`
 
-# Wait for rename to complete
-echo "Waiting ${POST_RENAME_DELAY}s for rename to complete..."
-sleep $POST_RENAME_DELAY
-
-# Send /start command to each worker pane with their issue numbers
-tmux send-keys -t parallel-dev:workers.0 '/start 79' Enter
-tmux send-keys -t parallel-dev:workers.1 '/start 80' Enter
-
-# For 3 workers:
-# tmux send-keys -t parallel-dev:workers.2 '/start 102' Enter
-
-echo "✓ Development started in all workers"
-```
-
-**Note:** Timing adjustments may be needed based on system performance. The delays ensure commands are sent after Claude is ready to receive them.
+> **Note:** `/start` creates a feature branch with `git checkout -b`. Since `parallel-setup` already created the worktree branch via `git worktree add -b`, running `/start` after the worktree is set up would fail. Start development manually in each worker pane instead.
 
 ### 8. Display Instructions for User
 

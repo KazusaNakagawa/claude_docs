@@ -69,6 +69,9 @@ worktrees=$(git worktree list --porcelain | grep "worktree " | cut -d' ' -f2 | g
 for worktree in $worktrees; do
   if [[ "$worktree" == *"worktree-worker"* ]] || [[ "$worktree" == *"worktree-"* ]]; then
     echo "Removing worktree: $worktree"
+    # --force is required to remove worktrees that may have uncommitted changes.
+    # This is intentionally allowed (not in the deny list of settings.json)
+    # to support cleanup workflows. Users are prompted for confirmation in Step 2.
     git worktree remove "$worktree" --force
     echo "✓ Removed $worktree"
   else
