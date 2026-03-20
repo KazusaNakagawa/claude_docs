@@ -79,7 +79,6 @@ cp EnglishLearnApp/Config.xcconfig.example \
 
 > ずんだもん音声を使わない場合、`AppConfig.swift` は空欄のままで構いません。
 > API キーの取得方法は [docs/02.voicevox_api_authentication.md](docs/02.voicevox_api_authentication.md) を参照してください。
-
 > ⚠️ `AppConfig.swift` / `Config.xcconfig` には秘密情報を含める可能性があります。
 > これらのファイルは `.gitignore` で管理されており、**絶対にコミットしない** でください。
 > 万が一 API キーが漏えいした場合は、ただちに無効化・再発行してください。
