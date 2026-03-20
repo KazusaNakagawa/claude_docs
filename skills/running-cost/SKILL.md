@@ -56,7 +56,7 @@
 **AWS の公式料金（東京リージョン目安。最新値は [AWS Pricing Calculator](https://calculator.aws/) で確認）** を使用し、不確実な項目には「〜」で範囲を示す。
 
 **計算方針**：
-- Fargate: `vCPU時間 × $0.04048 + メモリGiB時間 × $0.004445`（USD→JPY換算: 1USD=150円）
+- Fargate: `vCPU時間 × $0.04048 + メモリGiB時間 × $0.004445`（1USD=150円、目安）
 - Lambda: 100万リクエスト $0.20、GB秒 $0.0000166667
 - Aurora Serverless v2: ACU時間 $0.12/ACU時間、最小0.5ACU
 - RDS t3.medium: 約 $0.068/時間

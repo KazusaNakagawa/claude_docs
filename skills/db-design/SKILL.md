@@ -187,7 +187,7 @@ backend/
 # DB設計書 — {システム名}
 
 **生成日**: {日付}
-**対象スタック**: Python (SQLAlchemy / Alembic) + AWS RDS PostgreSQL（最新安定版）
+**対象スタック**: Python (SQLAlchemy / Alembic) + PostgreSQL（Aurora / RDS、採用結果に準拠）
 
 ---
 
