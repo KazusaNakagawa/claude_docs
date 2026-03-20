@@ -19,10 +19,17 @@ description: |
 ## 前提となる技術スタック
 
 このスキルは以下のスタックを使う開発者向けに最適化されています:
-- **フロントエンド**: React, TypeScript
-- **バックエンド**: Python
-- **インフラ**: AWS
+- **フロントエンド**: React（最新安定版）+ TypeScript（最新安定版）+ React Router（最新安定版）+ Tailwind CSS（最新安定版）
+- **バックエンド**: Python（最新安定版）+ FastAPI
+- **データベース**: PostgreSQL（最新安定版、AWS RDS サポート済み）
+- **インフラ**: AWS（ECS Fargate, Lambda, Cognito 等）
 - **対象領域**: Webアプリ, インフラ構築
+
+> **バージョン選定の方針**:
+> 1. 設計書を生成する前に、各ライブラリ・ランタイムの **現時点の最新安定版** を WebSearch で確認してから記載すること
+>    - 例: `"React latest stable version"` / `"AWS RDS PostgreSQL supported versions"`
+> 2. 確認できた場合は具体的なバージョン番号（例: `React 19.x`）を設計書に明記する
+> 3. 顧客側の制約（既存システムとの互換性等）がある場合のみバージョンをダウングレードし、その旨を明記すること
 
 ## 実行手順
 
@@ -174,11 +181,13 @@ flowchart LR
 ## アーキテクチャ方針
 
 ### フロントエンド
-- 技術: React + TypeScript
+- 技術: React（最新安定版）+ TypeScript（最新安定版）+ React Router（最新安定版）+ Tailwind CSS（最新安定版）
+  - ※ バージョンは WebSearch で確認した最新値を記載すること（例: React 19.x, React Router v7, Tailwind CSS v4）
 - [コンポーネント構成・状態管理・ルーティングの方針]
 
 ### バックエンド
-- 技術: Python ([FastAPI / Lambda / 等])
+- 技術: Python（最新安定版）+ [FastAPI / Lambda / 等]
+  - ※ バージョンは WebSearch で確認した最新値を記載すること（例: Python 3.13）
 - [API設計・ビジネスロジックの方針]
 
 ### インフラ（AWS）

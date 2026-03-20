@@ -65,14 +65,14 @@ Q2: スケールが予測困難、または 書き込みが高頻度（>1万件/
 
 Q3: 高可用性・自動フェイルオーバーが必要か？（本番・中規模以上）
   YES → Aurora PostgreSQL Serverless v2
-  NO  → RDS PostgreSQL（t3.medium〜）
+  NO  → RDS PostgreSQL（AWS RDS サポート済み最新安定版。WebSearch で確認すること）（t3.medium〜）
 ```
 
 **選定結果テンプレート**:
 ```
 | サービス | 理由 | 代替案 |
 |---------|------|--------|
-| Aurora PostgreSQL Serverless v2 | リレーショナルデータが中心、自動スケール必要 | RDS PostgreSQL（コスト優先時） |
+| Aurora PostgreSQL Serverless v2 | リレーショナルデータが中心、自動スケール必要 | RDS PostgreSQL（最新安定版）（コスト優先時） |
 ```
 
 ### Step 4: テーブル定義を作成する
@@ -135,6 +135,12 @@ erDiagram
 - PK / FK / UK を明記する
 - カラムは代表的なもの（5〜8個）に絞る（全カラムは Step 4 のテーブル定義に記載）
 
+> ⚠️ **Mermaid erDiagram の FK UK 制約** : 1カラムに指定できるキー種別は **1つのみ**（`FK UK` の複合指定は構文エラー）。
+> FK かつ UNIQUE にしたい場合は、キー種別を `FK` に固定し、UNIQUE である旨をコメント文字列に記載する:
+> ```
+> uuid user_id FK "UNIQUE - 1ユーザー1レコード"
+> ```
+
 ### Step 6: マイグレーション方針を記載する
 
 Python + AWS 構成を前提に以下を記載する:
@@ -181,7 +187,7 @@ backend/
 # DB設計書 — {システム名}
 
 **生成日**: {日付}
-**対象スタック**: Python (SQLAlchemy / Alembic) + AWS
+**対象スタック**: Python (SQLAlchemy / Alembic) + PostgreSQL（Aurora / RDS、採用結果に準拠）
 
 ---
 
@@ -265,3 +271,5 @@ CREATE INDEX idx_{table}_{column} ON {table}({column});
 - [ ] Alembic の運用フローが記載されているか
 - [ ] 設計上の判断・トレードオフが記載されているか
 - [ ] Mermaid の `erDiagram` 構文エラーがないか（FK は `FK` と明記）
+- [ ] 1カラムに `FK UK` を複合指定していないか（構文エラーになる。UNIQUE はコメント文字列へ移動すること）
+- [ ] データ移行・インポート仕様がある場合、実際のソースデータのJSONキー名を確認して使用しているか
