@@ -117,7 +117,7 @@ flowchart LR
 
 ---
 
-## 出力ファイル1: 顧客向けサマリー `customer-summary.md`
+## 出力ファイル1: 顧客向けサマリー `01.customer-summary.md`
 
 **目的**: 顧客へのヒアリング・回答・提案に使う、非技術者でも読めるドキュメント
 
@@ -155,7 +155,7 @@ flowchart LR
 
 ---
 
-## 出力ファイル2: 実装者向け設計書 `design-doc.md`
+## 出力ファイル2: 実装者向け設計書 `02.design-doc.md`
 
 **目的**: 開発者が実装を始めるための設計方針書
 
@@ -236,10 +236,10 @@ flowchart LR
 - [ ] 不明点・リスクが具体的に書かれている
 - [ ] 顧客サマリーが非技術者にも読める言葉になっている
 - [ ] 設計書が実装者が次のアクションを取れるレベルになっている
-- [ ] **Mermaid アーキテクチャ図が design-doc.md に含まれている**
+- [ ] **Mermaid アーキテクチャ図が 02.design-doc.md に含まれている**
 
 ## 出力場所
 
 生成したファイルはワークスペースフォルダに保存すること:
-- `customer-summary.md`
-- `design-doc.md`
+- `01.customer-summary.md`
+- `02.design-doc.md`

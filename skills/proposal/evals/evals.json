@@ -1,0 +1,51 @@
+{
+  "skill": "proposal",
+  "description": "proposal スキルの評価: エグゼクティブサマリー・Mermaid ガントチャート・TCO 表の品質チェック",
+  "test_cases": [
+    {
+      "id": "tc-case2-app",
+      "name": "EnglishLearnApp iOS版 提案書",
+      "input_file": "inputs/README-english-learn-app.md",
+      "output_file": "expected-outputs/case2-app/06.proposal.md",
+      "expectations": [
+        { "id": "e1", "description": "Mermaid ガントチャートが含まれる", "assertion": "```mermaid gantt が存在し、Xw 単位・excludes weekends が使用されていること（tickInterval は不使用）" },
+        { "id": "e2", "description": "エグゼクティブサマリーが含まれる", "assertion": "対応可否・工数・月額インフラ・3年間TCOの概要が冒頭に表形式で含まれること" },
+        { "id": "e3", "description": "リスク評価表が含まれる", "assertion": "影響度・発生確率・対策のリスクマトリクスが含まれること" },
+        { "id": "e4", "description": "次のステップが含まれる", "assertion": "推奨事項と具体的なネクストアクションが含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case2-aws",
+      "name": "VOICEVOX TTS iOS版 提案書",
+      "input_file": "inputs/README-voicevox-aws.md",
+      "output_file": "expected-outputs/case2-aws/06.proposal.md",
+      "expectations": [
+        { "id": "e1", "description": "Mermaid ガントチャートが含まれる", "assertion": "```mermaid gantt が存在し、Xw 単位・excludes weekends が使用されていること" },
+        { "id": "e2", "description": "アーキテクチャ比較（Lambda vs ECS）がある", "assertion": "複数の方式を比較し選定根拠を示す表が含まれること" },
+        { "id": "e3", "description": "3年間 TCO 比較表がある", "assertion": "初期費用・インフラ費・運用費の3年間合計が含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case3-app",
+      "name": "EnglishLearnApp Web版 提案書",
+      "input_file": "inputs/README-english-learn-app.md",
+      "output_file": "expected-outputs/case3-app/06.proposal.md",
+      "expectations": [
+        { "id": "e1", "description": "Mermaid ガントチャートが含まれる", "assertion": "```mermaid gantt が存在し、Xw 単位・excludes weekends が使用されていること" },
+        { "id": "e2", "description": "サーバーレスSPA案が推奨されている", "assertion": "S3+CloudFront（案A）が推奨として選定され、ECS等と比較されていること" },
+        { "id": "e3", "description": "iOS版との TCO 比較がある", "assertion": "iOS版と Web版の追加コストが比較表で示されていること" }
+      ]
+    },
+    {
+      "id": "tc-case3-aws",
+      "name": "VOICEVOX TTS Web版 提案書",
+      "input_file": "inputs/README-voicevox-aws.md",
+      "output_file": "expected-outputs/case3-aws/06.proposal.md",
+      "expectations": [
+        { "id": "e1", "description": "Mermaid ガントチャートが含まれる", "assertion": "```mermaid gantt が存在し、Xw 単位・excludes weekends が使用されていること" },
+        { "id": "e2", "description": "CORS 追加が最小工数で推奨されている", "assertion": "案A（CORS追加のみ）が推奨として選定され、Lambda 分離や ECS 等との比較が含まれること" },
+        { "id": "e3", "description": "お客様向けのアクション項目が含まれる", "assertion": "APIキー共有・ドメイン確定・キャラクター規約確認等のお客様対応事項が明記されていること" }
+      ]
+    }
+  ]
+}

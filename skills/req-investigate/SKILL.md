@@ -51,7 +51,7 @@ description: |
 
 ---
 
-## 出力ファイル: `investigation-report.md`
+## 出力ファイル: `07.investigation-report.md`
 
 以下のテンプレートに沿って生成してください:
 
@@ -126,4 +126,4 @@ description: |
 
 ## 出力場所
 
-`investigation-report.md` をワークスペースフォルダに保存すること。
+`07.investigation-report.md` をワークスペースフォルダに保存すること。

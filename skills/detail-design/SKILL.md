@@ -1,7 +1,7 @@
 # detail-design
 
 ## Description
-`design-doc.md`（req-estimate の出力）と `db-design.md` を受け取り、**実装者が迷わずコードを書き始められる詳細設計書**（`detail-design.md`）を生成するスキル。
+`02.design-doc.md`（req-estimate の出力）と `03.db-design.md` を受け取り、**実装者が迷わずコードを書き始められる詳細設計書**（`04.detail-design.md`）を生成するスキル。
 
 シーケンス図・API仕様・エラーハンドリング・環境変数一覧を含む。
 
@@ -10,7 +10,7 @@
 - 「詳細設計作って」「シーケンス図書いて」「API仕様をまとめて」
 - 「実装者に渡す設計書が欲しい」「コーディング前の設計書を作りたい」
 - 「エラーハンドリングの方針を決めたい」「環境変数を整理したい」
-- design-doc.md を渡されて「もっと詳しく」と言われたとき
+- 02.design-doc.md を渡されて「もっと詳しく」と言われたとき
 
 ---
 
@@ -19,8 +19,8 @@
 ### Step 1: 入力を読み込み設計要素を抽出する
 
 以下の優先順でファイルを読み込む：
-1. `design-doc.md`（アーキテクチャ設計）
-2. `db-design.md`（テーブル設計）
+1. `02.design-doc.md`（アーキテクチャ設計）
+2. `03.db-design.md`（テーブル設計）
 3. 元の要件定義書 / readme.md
 
 以下を抽出する：
@@ -226,20 +226,20 @@ sequenceDiagram
 - `id`（UUID）ベースを優先する（文字列フィールドは将来の変更・表記ゆれのリスクあり）
 - UUID が存在しない場合に限り、文字列フィールドによる重複チェックを採用し、その旨を設計書に明記する
 
-### Step 8: detail-design.md を出力する
+### Step 8: 04.detail-design.md を出力する
 
 ---
 
 ## Output Template
 
-### detail-design.md
+### 04.detail-design.md
 
 ```markdown
 # 詳細設計書 — {システム名}
 
 **生成日**: {日付}
 **対象**: 実装担当者向け
-**前提**: design-doc.md / db-design.md を読んでいること
+**前提**: 02.design-doc.md / 03.db-design.md を読んでいること
 
 ---
 

@@ -1,7 +1,7 @@
 # proposal
 
 ## Description
-`customer-summary.md`（req-estimate の出力）または要件定義書を受け取り、**経営者・意思決定者向けの提案書**（`proposal.md`）を生成するスキル。
+`01.customer-summary.md`（req-estimate の出力）または要件定義書を受け取り、**経営者・意思決定者向けの提案書**（`06.proposal.md`）を生成するスキル。
 
 技術的な話を排除し、「何が解決されるか」「いくらかかるか」「いつ終わるか」「何が心配か」を1ページで伝えることにフォーカスする。
 
@@ -9,7 +9,7 @@
 次のような状況で必ず使うこと:
 - 「提案書作って」「お客さんに見せる資料作って」「経営者向けにまとめて」
 - 「費用・スケジュールをまとめたい」「意思決定に使う資料が欲しい」
-- customer-summary.md を渡されて「これをもとに提案書を」と言われたとき
+- 01.customer-summary.md を渡されて「これをもとに提案書を」と言われたとき
 - req-estimate の後続工程として顧客提出用ドキュメントが必要なとき
 
 ---
@@ -19,9 +19,9 @@
 ### Step 1: 入力を読み込み情報を抽出する
 
 以下の優先順でファイルを読み込む：
-1. `customer-summary.md`（req-estimate の出力）
-2. `running-cost.md`（running-cost の出力）← あれば必ず読み込む
-3. `design-doc.md`（アーキテクチャ詳細）
+1. `01.customer-summary.md`（req-estimate の出力）
+2. `05.running-cost.md`（running-cost の出力）← あれば必ず読み込む
+3. `02.design-doc.md`（アーキテクチャ詳細）
 4. 元の要件定義書 / readme.md
 
 以下の情報を抽出する：
@@ -51,7 +51,7 @@
 ```
 
 **ランニングコストの取り扱い**：
-- `running-cost.md` が存在する場合 → その月額合計・年間TCOをそのまま転記する
+- `05.running-cost.md` が存在する場合 → その月額合計・年間TCOをそのまま転記する
 - 存在しない場合 → 構成から概算を推定して記載する（「※詳細は別途 running-cost 算出を推奨」と注記）
 
 ### Step 3: Gantt チャートでスケジュールを可視化する
@@ -62,12 +62,15 @@ Mermaid の `gantt` 記法でフェーズスケジュールを作成する。
 gantt
     title 開発スケジュール（目安）
     dateFormat  YYYY-MM-DD
+    axisFormat  %m/%d
+    excludes weekends
+
     section フェーズ0
-    PoC・技術検証         :p0, 2026-04-01, 10d
+    PoC・技術検証         :p0, 2026-04-07, 2w
     section フェーズ1
-    コア機能開発           :p1, after p0, 30d
+    コア機能開発           :p1, after p0, 6w
     section フェーズ2
-    管理画面・QA           :p2, after p1, 25d
+    管理画面・QA           :p2, after p1, 5w
 ```
 
 **Gantt 作成のルール**：
@@ -75,6 +78,24 @@ gantt
 - 各フェーズの期間は工数（人日）÷ 想定メンバー数で算出
 - 想定メンバー数が不明な場合は「2名体制」を仮定
 - 開始日は「受注から1〜2週間後」を目安とする
+
+**⚠️ Gantt レンダリング崩れを防ぐルール（必須）**：
+
+| NG パターン | 代替 | 理由 |
+|-----------|------|------|
+| `tickInterval 1week` | 使わない | VS Code 内蔵の Mermaid バージョンでは未サポート |
+| `Xd`（日単位）の指定 | `Xw`（週単位）に変換 | 日単位だと X 軸が毎日の目盛りになり潰れる |
+| セクション名・タスク名を長くする | 20字以内に収める | ラベルがバーに重なって読めなくなる |
+| `` ```mermaid `` ブロックに ASCII アート | `` ``` `` （plain）ブロックを使う | Mermaid パーサーが「No diagram type detected」エラーを出す |
+
+**期間の変換方法**（人日 → 週）：
+```
+工数（人日） ÷ 体制人数 ÷ 5（稼働日/週） = 週数
+例: 30人日 ÷ 2名 ÷ 5 = 3w
+例: 10人日 ÷ 1名 ÷ 5 = 2w
+```
+
+`excludes weekends` を付けると土日がスキップされ、週単位のレイアウトが自然に整う。
 
 ### Step 4: リスクを経営者目線で整理する
 
@@ -89,13 +110,13 @@ gantt
 - 🟡 中：スケジュール遅延・軽微な追加費用の可能性あり
 - 🟢 低：運用で対応可能
 
-### Step 5: proposal.md を出力する
+### Step 5: 06.proposal.md を出力する
 
 ---
 
 ## Output Template
 
-### proposal.md
+### 06.proposal.md
 
 ```markdown
 # 提案書 — {システム名}
@@ -141,8 +162,20 @@ gantt
 
 ```mermaid
 gantt
-    {Step 3 の Gantt}
+    title {システム名} 開発スケジュール（目安）
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m/%d
+    excludes weekends
+
+    section フェーズ0
+    {内容}   :p0, {開始日}, {N}w
+    section フェーズ1
+    {内容}   :p1, after p0, {N}w
+    section フェーズ2
+    {内容}   :p2, after p1, {N}w
 ```
+<!-- ⚠️ 期間は必ず Xw（週単位）で指定。Xd（日単位）を使うと X 軸が日次目盛りになり潰れる -->
+<!-- ⚠️ tickInterval は使わない（VS Code Mermaid で未サポート） -->
 
 ---
 
@@ -215,10 +248,15 @@ gantt
 - [ ] 技術用語（ECS / Lambda / Playwright 等）が本文に出ていないか
 - [ ] 費用が「人日」ではなく「万円」で表記されているか
 - [ ] Gantt チャートが Mermaid で正しく描画されるか
+  - `excludes weekends` が付いているか
+  - 期間が `Xw`（週単位）で指定されているか（`Xd` は使わない）
+  - `tickInterval` は使っていないか（VS Code Mermaid で未サポート）
+  - セクション名・タスク名が 20 字以内に収まっているか
+  - `` ```mermaid `` ブロックの中身が有効な Mermaid 構文か（ASCII アートは `` ``` `` に入れる）
 - [ ] リスクがビジネス影響として記載されているか
 - [ ] 「次のアクション」にinvestigation-reportの🔴項目が含まれているか
 - [ ] エグゼクティブサマリーが3〜4文に収まっているか
-- [ ] running-cost.md があれば月額・TCO が転記されているか
+- [ ] 05.running-cost.md があれば月額・TCO が転記されているか
 - [ ] ランニングコストに「AWSインフラ」「運用保守」「障害対応」の3項目があるか
 - [ ] 3年間TCOが記載されているか
 - [ ] 費用・TCOの数値がプレースホルダーではなく実数で埋まっているか

@@ -4,20 +4,66 @@
     {
       "id": 1,
       "prompt": "この設計書の不明点を調査してください。特に〇〇と△△の利用規約・自動操作の可否を調べて、ヒアリング事項もまとめてください。",
-      "expected_output": "investigation-report.md が生成される。〇〇・△△の規約について実際にWeb検索した結果が記載され、自動操作の可否が明確に示される。優先度付きのヒアリング事項リストがある。",
-      "files": ["evals/test-case-1-scout-design-doc.md"]
+      "expected_output": "07.investigation-report.md が生成される。〇〇・△△の規約について実際にWeb検索した結果が記載され、自動操作の可否が明確に示される。優先度付きのヒアリング事項リストがある。",
+      "files": ["evals/test-case-1-scout-02.design-doc.md"]
     },
     {
       "id": 2,
       "prompt": "設計書を見て、StripeとPayPayの規約・API制約を調べてください。ヒアリング事項もまとめてほしいです。",
-      "expected_output": "investigation-report.md が生成される。Stripe と PayPay の公式API・手数料・利用規約について調査結果が記載される。PayPay の法人契約条件について言及がある。",
-      "files": ["evals/test-case-2-payment-design-doc.md"]
+      "expected_output": "07.investigation-report.md が生成される。Stripe と PayPay の公式API・手数料・利用規約について調査結果が記載される。PayPay の法人契約条件について言及がある。",
+      "files": ["evals/test-case-2-payment-02.design-doc.md"]
     },
     {
       "id": 3,
       "prompt": "不明点を調査して追加ヒアリング事項をまとめてください。ClaudeのAPIがデータを学習に使うかどうかも確認してほしいです。",
-      "expected_output": "investigation-report.md が生成される。Anthropic のデータ利用ポリシー（学習に使われるかどうか）について実際に調べた結果が記載される。Confluence・Google Drive APIの制約も調査される。",
-      "files": ["evals/test-case-3-llm-design-doc.md"]
+      "expected_output": "07.investigation-report.md が生成される。Anthropic のデータ利用ポリシー（学習に使われるかどうか）について実際に調べた結果が記載される。Confluence・Google Drive APIの制約も調査される。",
+      "files": ["evals/test-case-3-llm-02.design-doc.md"]
+    }
+  ],
+  "test_cases_with_outputs": [
+    {
+      "id": "tc-case2-app",
+      "name": "EnglishLearnApp iOS版 不明点調査",
+      "input_file": "evals/inputs/README-english-learn-app.md",
+      "output_file": "evals/expected-outputs/case2-app/07.investigation-report.md",
+      "expectations": [
+        { "id": "e1", "assertion": "VOICEVOX Engine の利用規約（LGPL・クレジット表記）について WebSearch 結果が含まれること" },
+        { "id": "e2", "assertion": "OpenAI API の利用規約（学習データ利用可否）について調査されていること" },
+        { "id": "e3", "assertion": "優先度付き（高/中/低）のヒアリング事項リストが含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case2-aws",
+      "name": "VOICEVOX TTS iOS版 AWSインフラ不明点調査",
+      "input_file": "evals/inputs/README-voicevox-aws.md",
+      "output_file": "evals/expected-outputs/case2-aws/07.investigation-report.md",
+      "expectations": [
+        { "id": "e1", "assertion": "AWS Lambda Container Image の制約（サイズ上限・コールドスタート）が調査されていること" },
+        { "id": "e2", "assertion": "CDK バージョン・API Gateway HTTP API の最新情報が含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case3-app",
+      "name": "EnglishLearnApp Web版 不明点調査",
+      "input_file": "evals/inputs/README-english-learn-app.md",
+      "output_file": "evals/expected-outputs/case3-app/07.investigation-report.md",
+      "expectations": [
+        { "id": "e1", "assertion": "Web Speech API のブラウザ対応表（Chrome/Edge/Safari/Firefox）が含まれること" },
+        { "id": "e2", "assertion": "OpenAI API のブラウザ直接呼び出しの規約上の可否が調査されていること" },
+        { "id": "e3", "assertion": "VOICEVOX LGPL と Web サービス配信の可否が調査されていること" },
+        { "id": "e4", "assertion": "IndexedDB のブラウザ別容量制限が含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case3-aws",
+      "name": "VOICEVOX TTS Web版対応 不明点調査",
+      "input_file": "evals/inputs/README-voicevox-aws.md",
+      "output_file": "evals/expected-outputs/case3-aws/07.investigation-report.md",
+      "expectations": [
+        { "id": "e1", "assertion": "API Gateway HTTP API の CORS ネイティブサポートについて調査結果が含まれること" },
+        { "id": "e2", "assertion": "CloudFront OAC（Origin Access Control）の CDK v2 での実装方法が含まれること" },
+        { "id": "e3", "assertion": "着手前必須のヒアリング事項（エンドポイントURL・APIキー・ドメイン）がリストアップされていること" }
+      ]
     }
   ]
 }
