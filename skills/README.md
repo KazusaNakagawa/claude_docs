@@ -16,43 +16,47 @@ Claude デスクトップアプリ (Cowork) 用のカスタムスキル集です
 
 | スキル | 対象 | 説明 | 出力 | トリガー例 |
 |--------|------|------|------|-----------|
-| [req-estimate](./req-estimate/) | 実装者 | 要件定義書から設計・工数見積もりを生成 | `customer-summary.md` `design-doc.md` | 「見積もって」「設計して」 |
-| [req-investigate](./req-investigate/) | 実装者 | 不明点を調査し規約確認・ヒアリング事項を整理 | `investigation-report.md` | 「規約を調べて」「不明点まとめて」 |
-| [running-cost](./running-cost/) | 顧客・経営者 | 月額AWS費用・運用保守・障害対応コスト・年間TCOを算出 | `running-cost.md` | 「ランニングコスト出して」「TCO計算して」 |
-| [proposal](./proposal/) | 顧客・経営者 | 費用・Ganttチャート・TCO付きの意思決定向け提案書を生成 | `proposal.md` | 「提案書作って」「お客さんに見せる資料」 |
+| [req-estimate](./req-estimate/) | 実装者 | 要件定義書から設計・工数見積もりを生成 | `01.customer-summary.md` `02.design-doc.md` | 「見積もって」「設計して」 |
+| [req-investigate](./req-investigate/) | 実装者 | 不明点を調査し規約確認・ヒアリング事項を整理 | `07.investigation-report.md` | 「規約を調べて」「不明点まとめて」 |
+| [running-cost](./running-cost/) | 顧客・経営者 | 月額AWS費用・運用保守・障害対応コスト・年間TCOを算出 | `05.running-cost.md` | 「ランニングコスト出して」「TCO計算して」 |
+| [proposal](./proposal/) | 顧客・経営者 | 費用・Ganttチャート・TCO付きの意思決定向け提案書を生成 | `06.proposal.md` | 「提案書作って」「お客さんに見せる資料」 |
 
 #### 詳細設計（実装者向け）
 
 | スキル | 対象 | 説明 | 入力 | 出力 | トリガー例 |
 |--------|------|------|------|------|-----------|
-| [db-design](./db-design/) | 実装者 | 設計書・要件書からDB設計書を生成 | `design-doc.md` | `db-design.md` | 「DB設計して」「ER図作って」 |
-| [detail-design](./detail-design/) | 実装者 | シーケンス図・API仕様・エラーハンドリングの詳細設計書を生成 | `design-doc.md` `db-design.md` | `detail-design.md` | 「詳細設計して」「API仕様まとめて」 |
-| [job-api-design](./job-api-design/) | 実装者 | ジョブ処理・バッチ系APIのスキーマ/キュー/Worker/DLQ設計書を生成 | `detail-design.md` | `job-api-design.md` | 「ジョブ系APIの設計して」「SQS/Worker設計まとめて」 |
+| [db-design](./db-design/) | 実装者 | 設計書・要件書からDB設計書を生成 | `02.design-doc.md` | `03.db-design.md` | 「DB設計して」「ER図作って」 |
+| [detail-design](./detail-design/) | 実装者 | シーケンス図・API仕様・エラーハンドリングの詳細設計書を生成 | `02.design-doc.md` `03.db-design.md` | `04.detail-design.md` | 「詳細設計して」「API仕様まとめて」 |
+| [job-api-design](./job-api-design/) | 実装者 | ジョブ処理・バッチ系APIのスキーマ/キュー/Worker/DLQ設計書を生成（非同期ジョブ処理がある場合のみ） | `04.detail-design.md` | `08.job-api-design.md` | 「ジョブ系APIの設計して」「SQS/Worker設計まとめて」 |
 
 #### 運用設計（運用担当者向け）
 
 | スキル | 対象 | 説明 | 入力 | 出力 | トリガー例 |
 |--------|------|------|------|------|-----------|
-| [ops-monitoring](./ops-monitoring/) | 運用担当者 | CloudWatch + Slack 通知を前提とした日次監視・DLQ確認・SLO管理の運用設計書を生成 | `job-api-design.md` `detail-design.md` | `ops-monitoring.md` | 「監視設計して」「日次チェック手順まとめて」「Slack通知の設計」 |
+| [ops-monitoring](./ops-monitoring/) | 運用担当者 | CloudWatch + Slack 通知を前提とした日次監視・DLQ確認・SLO管理の運用設計書を生成（job-api-design 実行時のみ） | `08.job-api-design.md` `04.detail-design.md` | `09.ops-monitoring.md` | 「監視設計して」「日次チェック手順まとめて」「Slack通知の設計」 |
 
 ### スキルの関係図
 
 ```text
 req-full（親・ワンショット）
 │
-│  ── 上流工程 ──────────────────────────────────────────────────────
-├── req-estimate    → customer-summary.md + design-doc.md  （実装者向け）
-├── req-investigate → investigation-report.md              （調査・確認）
-├── running-cost    → running-cost.md                      （顧客・経営者向け）
-├── proposal        → proposal.md ← running-cost.md を参照 （顧客・経営者向け）
+│  ── Step 1: 上流工程 ───────────────────────────────────────────────
+├── req-estimate    → 01.customer-summary.md + 02.design-doc.md  （実装者向け）
 │
-│  ── 詳細設計 ──────────────────────────────────────────────────────
-├── db-design       → db-design.md       ← design-doc.md
-├── detail-design   → detail-design.md   ← design-doc.md + db-design.md
-└── job-api-design  → job-api-design.md  ← detail-design.md        ★ NEW
-
-── 運用設計（req-full の外・リリース後に使う）────────────────────────
-   ops-monitoring   → ops-monitoring.md  ← job-api-design.md       ★ NEW
+│  ── Step 2〜3: 詳細設計 ─────────────────────────────────────────────
+├── db-design       → 03.db-design.md       ← 02.design-doc.md
+├── detail-design   → 04.detail-design.md   ← 02.design-doc.md + 03.db-design.md
+│
+│  ── Step 4〜5: ジョブ設計・監視設計（条件付き） ──────────────────────
+├── job-api-design  → 08.job-api-design.md  ← 04.detail-design.md
+│                     ※ 非同期ジョブ処理（SQS/Worker/バッチ）が含まれる場合のみ
+├── ops-monitoring  → 09.ops-monitoring.md  ← 08.job-api-design.md
+│                     ※ job-api-design が生成された場合のみ
+│
+│  ── Step 6〜8: コスト・提案・調査 ──────────────────────────────────
+├── running-cost    → 05.running-cost.md    ← 02.design-doc.md
+├── proposal        → 06.proposal.md        ← 01.customer-summary.md + 05.running-cost.md
+└── req-investigate → 07.investigation-report.md ← 02.design-doc.md
 ```
 
 ---
@@ -75,7 +79,8 @@ skills/
 │   └── req-investigate.skill
 │
 ├── req-full/               # 親スキル（ワンショット・全スキル実行）
-│   └── SKILL.md
+│   ├── SKILL.md
+│   └── evals/              # 全7スキルの出力を網羅したサンプル
 │
 ├── req-estimate/           # 設計書・工数見積もり（実装者向け）
 │   ├── SKILL.md            # ★ スキルの本体（プロンプト）
@@ -91,8 +96,8 @@ skills/
 │   ├── SKILL.md
 │   └── evals/
 │
-├── job-api-design/         # ジョブ処理API詳細設計 SQS/Worker/DLQ（実装者向け）★ NEW
-│   └── SKILL.md
+├── job-api-design/         # ジョブ処理API詳細設計 SQS/Worker/DLQ（実装者向け）
+│   └── SKILL.md            # ※ evals なし（条件付き生成のため）
 │
 ├── running-cost/           # 月額コスト・運用保守・障害対応・年間TCO（顧客・経営者向け）
 │   ├── SKILL.md
@@ -106,8 +111,8 @@ skills/
 │   ├── SKILL.md
 │   └── evals/
 │
-└── ops-monitoring/         # 通常監視業務 CloudWatch+Slack 日次チェック（運用担当者向け）★ NEW
-    └── SKILL.md
+└── ops-monitoring/         # 通常監視業務 CloudWatch+Slack 日次チェック（運用担当者向け）
+    └── SKILL.md             # ※ evals なし（条件付き生成のため）
 ```
 
 ---
@@ -175,11 +180,11 @@ bash install.sh req-full
 > **初回インストール時の推奨順序**:
 >
 > **req-full を使う場合**（依存スキルを先にインストール）:
-> req-estimate → db-design → detail-design → running-cost → proposal → req-investigate → **req-full**
+> req-estimate → db-design → detail-design → job-api-design → ops-monitoring → running-cost → proposal → req-investigate → **req-full**
 >
-> **独立スキル**（req-full とは独立して単体で使用可能）:
-> - `job-api-design` — 詳細設計フェーズで個別使用
-> - `ops-monitoring` — リリース後の運用フェーズで使用
+> **単体でも使用可能**:
+> - `job-api-design` — 詳細設計フェーズで個別使用（req-full では非同期ジョブ処理がある場合のみ自動実行）
+> - `ops-monitoring` — 運用設計フェーズで個別使用（req-full では job-api-design 実行時のみ自動実行）
 
 ---
 
@@ -206,7 +211,7 @@ bash skills/install.sh new-skill
 
 ## スキル作成の参考資料
 
-- SKILL.md の書き方: [skill-creator スキルのドキュメント](https://docs.claude.ai) を参照
+- SKILL.md の書き方: [Claude Code スキルドキュメント](https://code.claude.com/docs/ja/skills) を参照
 - スキルの構成要素:
   - `name`: スキル名（英小文字・ハイフン区切り）
   - `description`: トリガー条件（どんな発言でこのスキルを使うか）

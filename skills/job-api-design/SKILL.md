@@ -1,7 +1,7 @@
 ---
 name: job-api-design
 description: |
-  detail-design.md（または design-doc.md）を受け取り、**ジョブ処理・バッチ系 API に特化した詳細設計書**（`job-api-design.md`）を生成するスキル。
+  04.detail-design.md（または 02.design-doc.md）を受け取り、**ジョブ処理・バッチ系 API に特化した詳細設計書**（`08.job-api-design.md`）を生成するスキル。
 
   ジョブスキーマ・キュー設計・ステータス管理・ワーカー設計・リトライ/DLQ・スケジューリング・モニタリングを網羅する。
 
@@ -10,12 +10,12 @@ description: |
   - SQS / Lambda / ECS Worker のような非同期ジョブ構成が含まれるとき
   - 「ジョブのステータス管理をどう設計する？」「DLQ の設計を教えて」
   - ジョブスキーマ・ジョブキュー・ワーカー・スケジューラーが絡む設計書を作りたいとき
-  - detail-design.md を渡されて「ジョブ処理部分をもっと詳しく」と言われたとき
+  - 04.detail-design.md を渡されて「ジョブ処理部分をもっと詳しく」と言われたとき
 ---
 
 # ジョブ処理 API 詳細設計スキル
 
-`detail-design.md` または `design-doc.md` をもとに、ジョブ処理・バッチ系 API の詳細設計書を生成します。
+`04.detail-design.md` または `02.design-doc.md` をもとに、ジョブ処理・バッチ系 API の詳細設計書を生成します。
 
 ---
 
@@ -24,9 +24,9 @@ description: |
 ### Step 1: 入力を読み込み、ジョブ処理要素を抽出する
 
 以下の優先順でファイルを読み込む：
-1. `detail-design.md`（既存の詳細設計）
-2. `design-doc.md`（アーキテクチャ設計）
-3. `db-design.md`（テーブル設計）
+1. `04.detail-design.md`（既存の詳細設計）
+2. `02.design-doc.md`（アーキテクチャ設計）
+3. `03.db-design.md`（テーブル設計）
 4. 元の要件定義書 / readme.md
 
 以下を抽出する：
@@ -420,20 +420,20 @@ FOR UPDATE SKIP LOCKED;
 
 ---
 
-### Step 11: job-api-design.md を出力する
+### Step 11: 08.job-api-design.md を出力する
 
 ---
 
 ## Output Template
 
-### job-api-design.md
+### 08.job-api-design.md
 
 ```markdown
 # ジョブ処理 API 詳細設計書 — {システム名}
 
 **生成日**: {日付}
 **対象**: 実装担当者向け
-**前提**: design-doc.md / detail-design.md を読んでいること
+**前提**: 02.design-doc.md / 04.detail-design.md を読んでいること
 
 ---
 
@@ -579,4 +579,4 @@ FOR UPDATE SKIP LOCKED;
 ## 出力場所
 
 生成したファイルはワークスペースフォルダに保存すること:
-- `job-api-design.md`
+- `08.job-api-design.md`

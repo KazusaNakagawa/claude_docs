@@ -1,23 +1,76 @@
 {
   "skill_name": "req-estimate",
+  "description": "req-estimate スキルの評価: 01.customer-summary.md と 02.design-doc.md の2ファイル生成品質チェック",
   "evals": [
     {
       "id": 1,
       "prompt": "この要件定義書を見て、対応可否・設計方針・工数見積もりを出してください。顧客向けサマリーと実装者向け設計書の2つを作ってほしいです。",
-      "expected_output": "customer-summary.md と design-doc.md の2ファイルが生成される。実現可否が明確に判断されており、機能ごとの工数内訳とバッファが含まれる。顧客向けは非技術者でも読める文章になっている。",
+      "expected_output": "01.customer-summary.md と 02.design-doc.md の2ファイルが生成される。実現可否が明確に判断されており、機能ごとの工数内訳とバッファが含まれる。顧客向けは非技術者でも読める文章になっている。",
       "files": ["evals/test-case-1-simple-webapp.md"]
     },
     {
       "id": 2,
       "prompt": "添付の要件書をもとに見積もりと設計方針をまとめてください。対応できるか、どのくらいかかるかを判断してほしいです。",
-      "expected_output": "customer-summary.md と design-doc.md が生成される。複雑な要件に対してリスクや条件が明示され、マイクロサービス化・AI機能などについて技術的判断が含まれる。フェーズ分けの提案がある。",
+      "expected_output": "01.customer-summary.md と 02.design-doc.md が生成される。複雑な要件に対してリスクや条件が明示され、マイクロサービス化・AI機能などについて技術的判断が含まれる。フェーズ分けの提案がある。",
       "files": ["evals/test-case-2-complex-infra.md"]
     },
     {
       "id": 3,
       "prompt": "要件書を渡すので、まず実現できるか判断して、できるなら見積もりを出してください。",
-      "expected_output": "customer-summary.md と design-doc.md が生成される。曖昧な要件に対して不明点・確認事項が明確にリストアップされ、条件付き対応可能の判断とともに複数の選択肢（Slack埋め込み vs Webなど）への言及がある。",
+      "expected_output": "01.customer-summary.md と 02.design-doc.md が生成される。曖昧な要件に対して不明点・確認事項が明確にリストアップされ、条件付き対応可能の判断とともに複数の選択肢（Slack埋め込み vs Webなど）への言及がある。",
       "files": ["evals/test-case-3-ambiguous.md"]
+    },
+    {
+      "id": 4,
+      "name": "EnglishLearnApp iOS版",
+      "prompt": "この README をもとに iOS アプリの顧客向けサマリーと設計書を作成してください。",
+      "input_file": "evals/inputs/README-english-learn-app.md",
+      "output_dir": "evals/expected-outputs/case2-app",
+      "expected_output": "01.customer-summary.md と 02.design-doc.md が生成される。iOS版のSwiftUI/CoreData/AVFoundation技術スタックが正しく把握され、機能15項目の工数内訳とバッファ込み総合計が含まれる。アーキテクチャ図（Mermaid flowchart）がある。",
+      "expectations": [
+        { "id": "e1", "assertion": "iOS→ネイティブ技術スタック（Swift/SwiftUI/CoreData）が記載されること" },
+        { "id": "e2", "assertion": "工数にバッファ（20〜25%）が含まれること" },
+        { "id": "e3", "assertion": "Mermaid flowchart のアーキテクチャ図が含まれること" }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "VOICEVOX TTS iOS版 AWSインフラ",
+      "prompt": "この README をもとに AWS CDK インフラの顧客向けサマリーと設計書を作成してください。",
+      "input_file": "evals/inputs/README-voicevox-aws.md",
+      "output_dir": "evals/expected-outputs/case2-aws",
+      "expected_output": "01.customer-summary.md と 02.design-doc.md が生成される。Lambda Container + API Gateway 構成の技術的根拠が記載され、CDK TypeScript による管理・環境分離（poc/dev/pro）・CI/CDの工数が含まれる。",
+      "expectations": [
+        { "id": "e1", "assertion": "Lambda vs ECS の比較検討が含まれること" },
+        { "id": "e2", "assertion": "CDK 環境分離（poc/dev/pro）が設計に含まれること" },
+        { "id": "e3", "assertion": "Mermaid flowchart のアーキテクチャ図が含まれること" }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "EnglishLearnApp Web版（React SPA + S3/CloudFront）",
+      "prompt": "iOS版アプリをWebブラウザ版に移植する設計ドキュメントを作成してください。ボイスエンジンは既存LambdaのCORS対応で流用、ReactフロントはS3+CloudFront配置。",
+      "input_file": "evals/inputs/README-english-learn-app.md",
+      "output_dir": "evals/expected-outputs/case3-app",
+      "expected_output": "iOS→Web版の技術マッピング（SwiftUI→React, FileManager→IndexedDB等）が含まれ、サーバーレスSPA設計（バックエンドサーバーなし）で設計されている。Web Speech APIのブラウザ制約（Chrome/Edge推奨）のリスクが明記されている。",
+      "expectations": [
+        { "id": "e1", "assertion": "iOS→Web 技術対応表が含まれること（SwiftUI→React, FileManager→IndexedDB等）" },
+        { "id": "e2", "assertion": "サーバーレス SPA（バックエンドサーバーなし）構成が明記されること" },
+        { "id": "e3", "assertion": "Web Speech API のブラウザ非対応（Safari）リスクが記載されること" }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "VOICEVOX TTS Web版対応（CORS追加）",
+      "prompt": "既存iOS版LambdaインフラにWebブラウザからのアクセスを可能にするCORS設定追加と、CloudFront+S3のSPAホスティングを追加する設計書を作成してください。",
+      "input_file": "evals/inputs/README-voicevox-aws.md",
+      "output_dir": "evals/expected-outputs/case3-aws",
+      "expected_output": "iOS版からの差分（CORS追加 + CloudFront/S3追加）が最小工数で設計されている。追加工数は数人日程度。環境別CORS設定（poc/*、dev/本番ドメイン、pro/本番のみ）が含まれる。",
+      "expectations": [
+        { "id": "e1", "assertion": "CORS設定追加が差分として明記されること（corsAllowOrigins）" },
+        { "id": "e2", "assertion": "追加工数が10人日以下であること" },
+        { "id": "e3", "assertion": "WebAppStack（CloudFront+S3）が新規追加として記載されること" }
+      ]
     }
   ]
 }

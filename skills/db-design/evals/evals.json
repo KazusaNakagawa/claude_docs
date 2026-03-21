@@ -6,7 +6,7 @@
       "id": "tc1-ec-site",
       "name": "ECサイト（raw要件書）",
       "input_file": "test-case-1-ec-site.md",
-      "output_file": "db-design.md",
+      "output_file": "03.db-design.md",
       "expectations": [
         {
           "id": "e1",
@@ -43,8 +43,8 @@
     {
       "id": "tc2-scout",
       "name": "スカウト返信自動化（design-doc から）",
-      "input_file": "test-case-2-scout-design-doc.md",
-      "output_file": "db-design.md",
+      "input_file": "test-case-2-scout-02.design-doc.md",
+      "output_file": "03.db-design.md",
       "expectations": [
         {
           "id": "e1",
@@ -76,6 +76,50 @@
           "description": "Alembicのマイグレーション方針が記載されている",
           "assertion": "ECSでの本番適用方針（init containerまたはCodePipeline）が言及されていること"
         }
+      ]
+    },
+    {
+      "id": "tc-case2-app",
+      "name": "EnglishLearnApp iOS版 アプリDB設計",
+      "input_file": "inputs/README-english-learn-app.md",
+      "output_file": "expected-outputs/case2-app/03.db-design.md",
+      "expectations": [
+        { "id": "e1", "description": "erDiagram が含まれている", "assertion": "```mermaid erDiagram が存在すること" },
+        { "id": "e2", "description": "iOS向けDBが適切に選定されている", "assertion": "CoreData / SQLite / Realm 等 iOS向けストレージが選定・言及されていること" },
+        { "id": "e3", "description": "単語・例文のリレーションが設計されている", "assertion": "words と sentences が 1:N のリレーションで設計されていること" },
+        { "id": "e4", "description": "ソフトデリート設計がある", "assertion": "status カラム（active/archived/deleted）または deleted_at カラムが含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case2-aws",
+      "name": "VOICEVOX TTS iOS版 AWSインフラ DB設計",
+      "input_file": "inputs/README-voicevox-aws.md",
+      "output_file": "expected-outputs/case2-aws/03.db-design.md",
+      "expectations": [
+        { "id": "e1", "description": "サーバーレス構成でDBなしが適切に判断されている", "assertion": "Lambda + API Gateway 構成のためRDBは不要、またはCDKパラメータ管理のみが設計されていること" }
+      ]
+    },
+    {
+      "id": "tc-case3-app",
+      "name": "EnglishLearnApp Web版 IndexedDB設計",
+      "input_file": "inputs/README-english-learn-app.md",
+      "output_file": "expected-outputs/case3-app/03.db-design.md",
+      "expectations": [
+        { "id": "e1", "description": "IndexedDB が採用されている", "assertion": "IndexedDB の object store 定義が含まれること" },
+        { "id": "e2", "description": "3ストア構成になっている", "assertion": "words / sentences / audio_cache の3つのobject storeが定義されていること" },
+        { "id": "e3", "description": "erDiagram が含まれる", "assertion": "```mermaid erDiagram が存在すること" },
+        { "id": "e4", "description": "localStorage スキーマが定義されている", "assertion": "設定値（APIキー・URL等）のlocalStorageキー一覧が含まれること" },
+        { "id": "e5", "description": "iOS word_set.json との互換性が記載されている", "assertion": "JSON import/export仕様でiOS版との互換フィールド（english/japanese/category等）が含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case3-aws",
+      "name": "VOICEVOX TTS Web版 CDKパラメータ設計",
+      "input_file": "inputs/README-voicevox-aws.md",
+      "output_file": "expected-outputs/case3-aws/03.db-design.md",
+      "expectations": [
+        { "id": "e1", "description": "CDKパラメータ管理が設計されている", "assertion": "Secrets Manager / SSM Parameter Store のパス設計が含まれること" },
+        { "id": "e2", "description": "環境別設定が定義されている", "assertion": "poc/dev/pro 環境別の corsAllowOrigins 等のパラメータが含まれること" }
       ]
     }
   ]

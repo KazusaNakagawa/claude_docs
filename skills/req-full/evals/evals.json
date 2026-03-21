@@ -1,0 +1,59 @@
+{
+  "skill": "req-full",
+  "description": "req-full スキルの評価: req-estimate→db-design→detail-design→running-cost→proposal→req-investigate の6スキル連鎖で7ファイルを生成する品質チェック",
+  "test_cases": [
+    {
+      "id": "tc-case2-app",
+      "name": "EnglishLearnApp iOS版 アプリ設計",
+      "input_file": "inputs/README-english-learn-app.md",
+      "instruction": "この README をもとに iOS アプリの設計ドキュメント一式を作成してください（req-full）",
+      "output_dir": "expected-outputs/case2-app",
+      "expectations": [
+        { "id": "e1", "description": "7ファイルが生成される", "assertion": "01.customer-summary.md / 02.design-doc.md / 03.db-design.md / 04.detail-design.md / 05.running-cost.md / 06.proposal.md / 07.investigation-report.md の7ファイルが存在すること" },
+        { "id": "e2", "description": "customer-summary に対応可否と工数が含まれる", "assertion": "対応可能/不可の判断と人日単位の工数見積もりが記載されていること" },
+        { "id": "e3", "description": "db-design に erDiagram が含まれる", "assertion": "```mermaid erDiagram が存在すること" },
+        { "id": "e4", "description": "proposal にガントチャートが含まれる", "assertion": "```mermaid gantt が存在し、Xw 単位・excludes weekends が含まれること" },
+        { "id": "e5", "description": "investigation-report に WebSearch 結果が含まれる", "assertion": "外部サービス（VOICEVOX / OpenAI / AWS）の利用規約・API制約に関する調査結果が含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case2-aws",
+      "name": "VOICEVOX TTS iOS版 AWSインフラ設計",
+      "input_file": "inputs/README-voicevox-aws.md",
+      "instruction": "この README をもとに AWS CDK インフラの設計ドキュメント一式を作成してください（req-full）",
+      "output_dir": "expected-outputs/case2-aws",
+      "expectations": [
+        { "id": "e1", "description": "7ファイルが生成される", "assertion": "7ファイルが存在すること" },
+        { "id": "e2", "description": "アーキテクチャ図が含まれる", "assertion": "02.design-doc.md に ```mermaid flowchart が存在すること" },
+        { "id": "e3", "description": "Lambda + API Gateway のコスト試算がある", "assertion": "05.running-cost.md にLambda実行コストと3年間TCOが含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case3-app",
+      "name": "EnglishLearnApp Web版（React SPA + S3/CloudFront）",
+      "input_file": "inputs/README-english-learn-app.md",
+      "instruction": "iOS版アプリをWebブラウザ版に移植する設計ドキュメントを作成してください。ボイスエンジンは既存LambdaのCORS対応で流用、ReactフロントはS3+CloudFront配置。req-full で一括生成してください。",
+      "output_dir": "expected-outputs/case3-app",
+      "expectations": [
+        { "id": "e1", "description": "7ファイルが生成される", "assertion": "7ファイルが存在すること" },
+        { "id": "e2", "description": "iOS→Web技術マッピングが含まれる", "assertion": "01.customer-summary.md に SwiftUI→React, FileManager→IndexedDB 等の対応表が含まれること" },
+        { "id": "e3", "description": "IndexedDB スキーマが設計されている", "assertion": "03.db-design.md に IndexedDB の object store 定義と erDiagram が含まれること" },
+        { "id": "e4", "description": "サーバーレスSPA設計になっている", "assertion": "02.design-doc.md にバックエンドサーバーなし・S3+CloudFront構成が記載されていること" },
+        { "id": "e5", "description": "Web Speech API の対応状況が調査されている", "assertion": "07.investigation-report.md にブラウザ対応表（Chrome/Edge/Safari）が含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case3-aws",
+      "name": "VOICEVOX TTS Web版対応（CORS追加 + CloudFront/S3）",
+      "input_file": "inputs/README-voicevox-aws.md",
+      "instruction": "既存iOS版LambdaインフラにWebブラウザ（React SPA）からのアクセスを可能にするCORS設定追加と、CloudFront+S3のSPAホスティングを追加する設計ドキュメントをreq-fullで作成してください。",
+      "output_dir": "expected-outputs/case3-aws",
+      "expectations": [
+        { "id": "e1", "description": "7ファイルが生成される", "assertion": "7ファイルが存在すること" },
+        { "id": "e2", "description": "CORS設定の変更差分が明記されている", "assertion": "02.design-doc.md にcorsAllowOriginsの環境別設定が含まれること" },
+        { "id": "e3", "description": "WebAppStack（CloudFront+S3）が追加されている", "assertion": "02.design-doc.md にCloudFront + S3のCDKスタック定義が含まれること" },
+        { "id": "e4", "description": "追加コストが小さい", "assertion": "05.running-cost.md にWeb版追加分が¥2,000/月未満で試算されていること" }
+      ]
+    }
+  ]
+}

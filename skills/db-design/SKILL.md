@@ -1,14 +1,14 @@
 # db-design
 
 ## Description
-要件定義書 or 設計書（design-doc.md）を受け取り、DB設計書（db-design.md）を生成するスキル。
+要件定義書 or 設計書（02.design-doc.md）を受け取り、DB設計書（03.db-design.md）を生成するスキル。
 - ER図（Mermaid erDiagram）
 - テーブル定義（カラム・型・制約・インデックス）
 - AWS DBサービス選定（RDS / Aurora / DynamoDB 比較）
 - マイグレーション方針（Alembic）
 
 **入力は2パターン対応**:
-1. `design-doc.md`（req-estimate スキルの出力）
+1. `02.design-doc.md`（req-estimate スキルの出力）
 2. 生の要件定義書 / readme
 
 ## Trigger Conditions
@@ -16,7 +16,7 @@
 - 「DB設計して」「テーブル設計して」「ER図を作って」
 - 「RDS か DynamoDB どっちがいい？」「DB選定して」
 - 「マイグレーション方針を決めたい」
-- design-doc.md を渡されたとき（DB設計が含まれていない場合）
+- 02.design-doc.md を渡されたとき（DB設計が含まれていない場合）
 - req-estimate の後続工程として DB設計が必要なとき
 
 ## Steps
@@ -24,7 +24,7 @@
 ### Step 1: 入力の種類を判定する
 
 入力ファイルを読み込み、以下を確認する:
-- **design-doc.md の場合**: 「システム概要」「機能要件」「アーキテクチャ図」が含まれる → Step 2 へ
+- **02.design-doc.md の場合**: 「システム概要」「機能要件」「アーキテクチャ図」が含まれる → Step 2 へ
 - **raw 要件書の場合**: 機能リストや要件が書かれた markdown / テキスト → Step 2 へ（同じ処理）
 
 どちらの場合も、以下を抽出する:
@@ -173,7 +173,7 @@ backend/
 - または CodePipeline の Deploy ステージに組み込む
 - マイグレーション失敗時は ECS タスク起動を止める（ヘルスチェック連携）
 
-### Step 7: db-design.md を出力する
+### Step 7: 03.db-design.md を出力する
 
 以下のテンプレートに従ってファイルを生成する。
 
@@ -181,7 +181,7 @@ backend/
 
 ## Output Templates
 
-### db-design.md
+### 03.db-design.md
 
 ```markdown
 # DB設計書 — {システム名}

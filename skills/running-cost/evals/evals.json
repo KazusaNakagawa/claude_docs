@@ -1,0 +1,49 @@
+{
+  "skill": "running-cost",
+  "description": "running-cost スキルの評価: AWS コスト試算・3年間 TCO・スケール別比較の品質チェック",
+  "test_cases": [
+    {
+      "id": "tc-case2-app",
+      "name": "EnglishLearnApp iOS版 コスト試算",
+      "input_file": "inputs/README-english-learn-app.md",
+      "output_file": "expected-outputs/case2-app/05.running-cost.md",
+      "expectations": [
+        { "id": "e1", "description": "AWS サービス別月額が記載されている", "assertion": "Lambda / API Gateway 等の月額コストが個別に試算されていること" },
+        { "id": "e2", "description": "3年間 TCO が計算されている", "assertion": "初期開発費 + インフラ × 36ヶ月 + 運用保守の合計が含まれること" },
+        { "id": "e3", "description": "コスト前提条件が明示されている", "assertion": "月間ユーザー数・リクエスト数などの前提が表またはリストで含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case2-aws",
+      "name": "VOICEVOX TTS iOS版 AWSコスト試算",
+      "input_file": "inputs/README-voicevox-aws.md",
+      "output_file": "expected-outputs/case2-aws/05.running-cost.md",
+      "expectations": [
+        { "id": "e1", "description": "Lambda 実行コストが計算されている", "assertion": "Lambda 実行回数 × 実行時間 × メモリ × 単価 の計算式が含まれること" },
+        { "id": "e2", "description": "ECR ストレージコストが含まれる", "assertion": "コンテナイメージの ECR 保管コストが含まれること（または無料枠で¥0と判断）" },
+        { "id": "e3", "description": "3年間 TCO が計算されている", "assertion": "インフラ構築費 + AWS × 36ヶ月 + 運用保守の合計が含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case3-app",
+      "name": "EnglishLearnApp Web版 コスト試算",
+      "input_file": "inputs/README-english-learn-app.md",
+      "output_file": "expected-outputs/case3-app/05.running-cost.md",
+      "expectations": [
+        { "id": "e1", "description": "S3 + CloudFront のコストが試算されている", "assertion": "CloudFront 転送量・リクエスト数・S3 ストレージの月額が含まれること" },
+        { "id": "e2", "description": "OpenAI API コストがユーザー負担として除外されている", "assertion": "OpenAI コストはユーザー自身が負担するため除外と明記されていること" },
+        { "id": "e3", "description": "スケール別コスト比較がある", "assertion": "小規模・中規模・大規模など複数シナリオのコスト比較が含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case3-aws",
+      "name": "VOICEVOX TTS Web版追加コスト試算",
+      "input_file": "inputs/README-voicevox-aws.md",
+      "output_file": "expected-outputs/case3-aws/05.running-cost.md",
+      "expectations": [
+        { "id": "e1", "description": "iOS版との差分コストが明示されている", "assertion": "Web版追加分のコスト（CloudFront + S3 + Lambda増分）が iOS版との比較表で示されていること" },
+        { "id": "e2", "description": "追加月額が低コストである", "assertion": "Web版追加月額が¥2,000未満で試算されていること（個人利用前提）" }
+      ]
+    }
+  ]
+}

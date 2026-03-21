@@ -1,21 +1,21 @@
 ---
 name: ops-monitoring
 description: |
-  job-api-design.md や detail-design.md を受け取り、**AWS CloudWatch + Slack 通知を前提とした通常監視業務の運用設計書**（`ops-monitoring.md`）を生成するスキル。
+  08.job-api-design.md や 04.detail-design.md を受け取り、**AWS CloudWatch + Slack 通知を前提とした通常監視業務の運用設計書**（`09.ops-monitoring.md`）を生成するスキル。
 
   日次ヘルスチェック・DLQ 監視・SLO 確認・アラート対応フロー・Slack 通知テンプレートを網羅する。
 
   次のような状況で必ず使うこと:
   - 「監視設計をまとめて」「運用フローを整理して」「Slack 通知の設計をしたい」
   - 「DLQ の監視どうする？」「日次チェックの手順が欲しい」
-  - job-api-design.md を渡されて「運用・監視部分を詳しく」と言われたとき
+  - 08.job-api-design.md を渡されて「運用・監視部分を詳しく」と言われたとき
   - CloudWatch アラーム / SNS / Slack 連携の設計が必要なとき
   - リリース前に運用手順書を整備したいとき
 ---
 
 # 通常監視業務 運用設計スキル
 
-`job-api-design.md` または `detail-design.md` をもとに、AWS CloudWatch + Slack 通知を前提とした通常監視業務の運用設計書を生成します。
+`08.job-api-design.md` または `04.detail-design.md` をもとに、AWS CloudWatch + Slack 通知を前提とした通常監視業務の運用設計書を生成します。
 
 ---
 
@@ -24,9 +24,9 @@ description: |
 ### Step 1: 入力を読み込み、監視対象を洗い出す
 
 以下の優先順でファイルを読み込む：
-1. `job-api-design.md`（ジョブ処理設計 — SQS/Worker/DLQ 構成）
-2. `detail-design.md`（API 設計 — エンドポイント / エラーハンドリング）
-3. `design-doc.md`（アーキテクチャ全体）
+1. `08.job-api-design.md`（ジョブ処理設計 — SQS/Worker/DLQ 構成）
+2. `04.detail-design.md`（API 設計 — エンドポイント / エラーハンドリング）
+3. `02.design-doc.md`（アーキテクチャ全体）
 
 以下を抽出する：
 ```text
@@ -286,20 +286,20 @@ Lambda 自前実装の場合:
 
 ---
 
-### Step 8: ops-monitoring.md を出力する
+### Step 8: 09.ops-monitoring.md を出力する
 
 ---
 
 ## Output Template
 
-### ops-monitoring.md
+### 09.ops-monitoring.md
 
 ```markdown
 # 通常監視業務 運用設計書 — {システム名}
 
 **生成日**: {日付}
 **対象**: 運用担当者向け
-**前提**: job-api-design.md / detail-design.md を読んでいること
+**前提**: 08.job-api-design.md / 04.detail-design.md を読んでいること
 **監視基盤**: AWS CloudWatch + SNS + Slack
 
 ---
@@ -397,4 +397,4 @@ Lambda 自前実装の場合:
 ## 出力場所
 
 生成したファイルはワークスペースフォルダに保存すること:
-- `ops-monitoring.md`
+- `09.ops-monitoring.md`

@@ -1,0 +1,53 @@
+{
+  "skill": "detail-design",
+  "description": "detail-design スキルの評価: シーケンス図・API仕様・エラーハンドリング・テスト仕様の品質チェック",
+  "test_cases": [
+    {
+      "id": "tc-case2-app",
+      "name": "EnglishLearnApp iOS版 詳細設計",
+      "input_file": "inputs/README-english-learn-app.md",
+      "output_file": "expected-outputs/case2-app/04.detail-design.md",
+      "expectations": [
+        { "id": "e1", "description": "Mermaid シーケンス図が含まれる", "assertion": "```mermaid sequenceDiagram が1つ以上存在すること" },
+        { "id": "e2", "description": "VOICEVOX TTS のフローが設計されている", "assertion": "TTS 呼び出し（Lambda/API Gateway）のシーケンス図が含まれること" },
+        { "id": "e3", "description": "エラーハンドリング方針が定義されている", "assertion": "タイムアウト・ネットワークエラー等の対応方針が表またはリストで含まれること" },
+        { "id": "e4", "description": "テスト仕様が含まれる", "assertion": "単体テスト・結合テスト・E2Eテストの区別が含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case2-aws",
+      "name": "VOICEVOX TTS iOS版 AWSインフラ詳細設計",
+      "input_file": "inputs/README-voicevox-aws.md",
+      "output_file": "expected-outputs/case2-aws/04.detail-design.md",
+      "expectations": [
+        { "id": "e1", "description": "デプロイフローのシーケンス図がある", "assertion": "GitHub Actions → ECR push → Lambda 更新のフローが含まれること" },
+        { "id": "e2", "description": "CDK スタック仕様が定義されている", "assertion": "Lambda / API Gateway / ECR の CDK コード例または設定値が含まれること" },
+        { "id": "e3", "description": "CDK テスト仕様がある", "assertion": "CDK Assertions による unit test の検証内容が含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case3-app",
+      "name": "EnglishLearnApp Web版 詳細設計",
+      "input_file": "inputs/README-english-learn-app.md",
+      "output_file": "expected-outputs/case3-app/04.detail-design.md",
+      "expectations": [
+        { "id": "e1", "description": "VOICEVOX TTS フロー（キャッシュあり/なし）のシーケンス図がある", "assertion": "キャッシュヒット・ミスの両分岐を含む sequenceDiagram が含まれること" },
+        { "id": "e2", "description": "OpenAI 例文生成フローのシーケンス図がある", "assertion": "APIキー確認→OpenAI呼び出し→結果保存のフローが含まれること" },
+        { "id": "e3", "description": "Web Speech API 発音チェックフローがある", "assertion": "ブラウザ非対応ケースを含む SpeechRecognition のシーケンス図が含まれること" },
+        { "id": "e4", "description": "クライアントサービス仕様が定義されている", "assertion": "TypeScript の interface または function 定義が含まれること" },
+        { "id": "e5", "description": "Vitest + Playwright のテスト仕様がある", "assertion": "Vitest 単体テストと Playwright E2E テストのシナリオが含まれること" }
+      ]
+    },
+    {
+      "id": "tc-case3-aws",
+      "name": "VOICEVOX TTS Web版 詳細設計",
+      "input_file": "inputs/README-voicevox-aws.md",
+      "output_file": "expected-outputs/case3-aws/04.detail-design.md",
+      "expectations": [
+        { "id": "e1", "description": "CORS プリフライトフローのシーケンス図がある", "assertion": "OPTIONS リクエスト → 200 + CORS ヘッダー のシーケンス図が含まれること" },
+        { "id": "e2", "description": "SPA デプロイフロー（GitHub Actions）が設計されている", "assertion": "S3 sync + CloudFront Invalidation の自動化フローが含まれること" },
+        { "id": "e3", "description": "CDK テスト仕様がある", "assertion": "CORS設定・OAC設定・404→index.html の CDK unit test が含まれること" }
+      ]
+    }
+  ]
+}

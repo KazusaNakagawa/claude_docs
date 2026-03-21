@@ -9,6 +9,9 @@ skills/dist/
 .vscode/
 *.swp
 
+# Claude
+.claude/settings.json
+
 # 管理外のファイル
 _test*.md
 output/
