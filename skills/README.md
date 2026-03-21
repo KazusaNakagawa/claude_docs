@@ -211,7 +211,7 @@ bash skills/install.sh new-skill
 
 ## スキル作成の参考資料
 
-- SKILL.md の書き方: [skill-creator スキルのドキュメント](https://docs.claude.ai) を参照
+- SKILL.md の書き方: [Claude Code スキルドキュメント](https://code.claude.com/docs/ja/skills) を参照
 - スキルの構成要素:
   - `name`: スキル名（英小文字・ハイフン区切り）
   - `description`: トリガー条件（どんな発言でこのスキルを使うか）
