@@ -65,6 +65,7 @@ if [ -n "$TARGET_CMD" ]; then
   fi
 else
   for cmd_file in "$COMMANDS_SRC"/*.md; do
+    [ -f "$cmd_file" ] || continue
     install_command "$cmd_file"
   done
 fi

@@ -94,7 +94,7 @@ description: 要件定義書を受け取り、req-estimate・db-design・detail-
 
 ### Step 9: 完了サマリーを表示する
 
-```
+```text
 ✅ req-full 完了 — {生成済みファイル数}ファイルを生成しました
 ⚠️ 未実行スキル: {未実行スキル名の一覧、または "なし"}
 

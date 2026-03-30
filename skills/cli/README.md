@@ -31,7 +31,7 @@ bash skills/cli/install.sh --global
 
 `~/.claude/commands/` に展開され、**どのプロジェクトでも** `claude` を起動すればすぐ使えます。コマンドは `/<name>` で呼び出します。
 
-```bash
+```text
 /req-full README.md
 /req-estimate README.md
 ```
@@ -48,7 +48,7 @@ bash skills/cli/install.sh . req-full
 
 `claude_docs/.claude/commands/` に展開されます。`claude_docs/` ディレクトリで `claude` を起動したときのみ有効です。コマンドは `/project:<name>` で呼び出します。
 
-```bash
+```text
 /project:req-full README.md
 ```
 
@@ -67,7 +67,7 @@ claude
 
 ### 一式まとめて生成（推奨）
 
-```bash
+```text
 # グローバルの場合
 /req-full README.md
 
@@ -91,14 +91,13 @@ claude
 | `/req-investigate 02.design-doc.md` | 設計書 | `07.investigation-report.md` |
 
 > プロジェクトローカルの場合は `/` の後に `project:` を付けてください（例: `/project:req-full`）。
-
 > **出力先**: 入力ファイルと同じディレクトリに保存されます。
 
 ---
 
 ## ディレクトリ構成
 
-```bash
+```text
 cli/
 ├── README.md          # このファイル
 ├── install.sh         # .claude/commands/ に展開するスクリプト
@@ -118,17 +117,31 @@ cli/
 
 ## スキルの更新フロー
 
-```bash
-1. skills/<name>/SKILL.md を編集（共通）
+**既存スキルを編集する場合:**
+
+```text
+1. skills/<name>/SKILL.md を編集
         ↓
 2a. Cowork 向け: bash skills/install.sh <name>
     → dist/<name>.skill をデスクトップアプリに再インストール
 
-2b. CLI 向け: bash skills/cli/install.sh
-    → .claude/commands/ が自動更新（次回 Claude Code 起動時に反映）
+2b. CLI 向け: claude を再起動するだけ（install.sh 不要）
+    → 実行時に Glob で SKILL.md を参照するため、再インストール不要
 ```
 
-Cowork パターンはパッケージの再インストールが必要ですが、CLI パターンは `SKILL.md` を直接参照するため **再インストール不要**（`claude` を再起動するだけ）。
+**新しいスキル（コマンド）を追加する場合:**
+
+```text
+1. skills/<name>/SKILL.md を作成
+2. skills/cli/commands/<name>.md を作成（薄いラッパー）
+        ↓
+3a. Cowork 向け: bash skills/install.sh <name>
+3b. CLI 向け: bash skills/cli/install.sh
+    → .claude/commands/<name>.md が展開され、コマンドとして登録される
+    → claude を再起動して反映
+```
+
+Cowork パターンはパッケージの再インストールが必要ですが、CLI パターンは既存 `SKILL.md` 編集時は **再インストール不要**（`claude` を再起動するだけ）。新コマンド追加時のみ `install.sh` の実行が必要です。
 
 ---
 
