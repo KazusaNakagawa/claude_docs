@@ -31,7 +31,7 @@ bash skills/cli/install.sh --global
 
 `~/.claude/commands/` に展開され、**どのプロジェクトでも** `claude` を起動すればすぐ使えます。コマンドは `/<name>` で呼び出します。
 
-```
+```bash
 /req-full README.md
 /req-estimate README.md
 ```
@@ -48,7 +48,7 @@ bash skills/cli/install.sh . req-full
 
 `claude_docs/.claude/commands/` に展開されます。`claude_docs/` ディレクトリで `claude` を起動したときのみ有効です。コマンドは `/project:<name>` で呼び出します。
 
-```
+```bash
 /project:req-full README.md
 ```
 
@@ -67,7 +67,7 @@ claude
 
 ### 一式まとめて生成（推奨）
 
-```
+```bash
 # グローバルの場合
 /req-full README.md
 
@@ -98,7 +98,7 @@ claude
 
 ## ディレクトリ構成
 
-```
+```bash
 cli/
 ├── README.md          # このファイル
 ├── install.sh         # .claude/commands/ に展開するスクリプト
@@ -118,7 +118,7 @@ cli/
 
 ## スキルの更新フロー
 
-```
+```bash
 1. skills/<name>/SKILL.md を編集（共通）
         ↓
 2a. Cowork 向け: bash skills/install.sh <name>
