@@ -157,6 +157,10 @@ open skills/req-estimate/evals/evals.json
 
 ## スキルのインストール手順
 
+スキルには **2つのインストールパターン**があります。詳細は [`cli/README.md`](./cli/README.md) を参照してください。
+
+### Cowork パターン（Claude デスクトップアプリ）
+
 編集後、Claude デスクトップアプリに反映するには `.skill` ファイルにパッケージして再インストールします。
 
 ```bash
@@ -195,9 +199,12 @@ bash install.sh req-full
 git add skills/req-estimate/SKILL.md
 git commit -m "fix: req-estimate - 工数バッファ率を修正"
 
-# パッケージ → Claude アプリに再インストール
+# [Cowork 向け] パッケージ → Claude アプリに再インストール
 bash skills/install.sh req-estimate
 # → dist/req-estimate.skill を Claude アプリにドラッグ&ドロップ
+
+# [CLI 向け] .claude/commands/ を再展開（claude コマンド再起動で即反映）
+bash skills/cli/install.sh
 
 # 新しいスキルを追加したとき
 mkdir -p skills/new-skill
@@ -206,6 +213,22 @@ git add skills/new-skill/
 git commit -m "feat: add new-skill"
 bash skills/install.sh new-skill
 ```
+
+---
+
+### CLI パターン（Claude Code）
+
+Claude Code（ターミナル）でスラッシュコマンドとして使う場合:
+
+```bash
+# claude_docs リポジトリのルートで一括インストール
+bash skills/cli/install.sh
+
+# 特定プロジェクトにインストール
+bash skills/cli/install.sh /path/to/your-project
+```
+
+インストール後は Claude Code で `/project:req-full README.md` のように呼び出せます。
 
 ---
 
