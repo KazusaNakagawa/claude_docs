@@ -1,3 +1,8 @@
+---
+name: req-investigate
+description: 設計書・要件書を受け取り、外部サービスの規約・API制約をWebSearchで調査し、顧客への追加ヒアリング事項を優先度付きでまとめたレポートを生成する
+---
+
 # req-investigate — 規約調査・ヒアリング事項整理
 
 **使い方**: `/project:req-investigate <設計書のパス>`

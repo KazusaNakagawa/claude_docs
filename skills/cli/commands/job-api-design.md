@@ -1,3 +1,8 @@
+---
+name: job-api-design
+description: 詳細設計書を受け取り、SQS/Worker/DLQ/スケジューラーを含む非同期ジョブ処理API設計書を生成する（非同期処理がある場合のみ使用）
+---
+
 # job-api-design — ジョブ処理API設計書生成
 
 **使い方**: `/project:job-api-design <詳細設計書のパス>`

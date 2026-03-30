@@ -1,3 +1,8 @@
+---
+name: proposal
+description: 顧客サマリーと運用コスト試算を受け取り、費用・Ganttチャート・3年間TCOを含む経営者・意思決定者向け提案書を生成する
+---
+
 # proposal — 提案書生成
 
 **使い方**: `/project:proposal <顧客サマリーのパス>`

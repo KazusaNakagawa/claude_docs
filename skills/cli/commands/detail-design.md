@@ -1,3 +1,8 @@
+---
+name: detail-design
+description: 設計書とDB設計書を受け取り、シーケンス図・API仕様・エラーハンドリング・環境変数一覧を含む詳細設計書を生成する
+---
+
 # detail-design — 詳細設計書生成
 
 **使い方**: `/project:detail-design <設計書のパス>`

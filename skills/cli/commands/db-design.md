@@ -1,3 +1,8 @@
+---
+name: db-design
+description: 設計書（02.design-doc.md）または要件定義書を受け取り、ER図・テーブル定義・AWS DB選定・マイグレーション方針を含むDB設計書を生成する
+---
+
 # db-design — DB設計書生成
 
 **使い方**: `/project:db-design <設計書のパス>`

@@ -1,3 +1,8 @@
+---
+name: ops-monitoring
+description: ジョブAPI設計書を受け取り、CloudWatch+Slack通知を前提とした日次監視・DLQ確認・SLO管理の運用監視設計書を生成する
+---
+
 # ops-monitoring — 運用監視設計書生成
 
 **使い方**: `/project:ops-monitoring <ジョブAPI設計書のパス>`

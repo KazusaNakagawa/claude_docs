@@ -4,7 +4,7 @@ Claude Code（CLI）でスキルをスラッシュコマンドとして使うた
 
 ## 設計思想：スキルの共通化
 
-```
+```bash
 skills/<name>/SKILL.md  ← 単一ソース（ロジックの実体）
       ↑                         ↑
 Cowork パターン           CLI パターン
@@ -22,47 +22,56 @@ Cowork パターン           CLI パターン
 
 ## インストール手順
 
+### ✅ 推奨：ユーザーグローバル（どのプロジェクトからでも使える）
+
 ```bash
 # claude_docs リポジトリのルートで実行
-bash skills/cli/install.sh
+bash skills/cli/install.sh --global
+```
 
-# 特定プロジェクトにインストールする場合
-bash skills/cli/install.sh /path/to/your-project
+`~/.claude/commands/` に展開され、**どのプロジェクトでも** `claude` を起動すればすぐ使えます。コマンドは `/<name>` で呼び出します。
+
+```
+/req-full README.md
+/req-estimate README.md
+```
+
+### プロジェクトローカル（このプロジェクト内でのみ使う）
+
+```bash
+# claude_docs ディレクトリのルートで実行
+bash skills/cli/install.sh
 
 # 特定コマンドのみ
 bash skills/cli/install.sh . req-full
 ```
 
-インストール後、`.claude/commands/` に以下が展開されます:
+`claude_docs/.claude/commands/` に展開されます。`claude_docs/` ディレクトリで `claude` を起動したときのみ有効です。コマンドは `/project:<name>` で呼び出します。
 
 ```
-.claude/commands/
-├── req-full.md
-├── req-estimate.md
-├── db-design.md
-├── detail-design.md
-├── job-api-design.md
-├── ops-monitoring.md
-├── running-cost.md
-├── proposal.md
-└── req-investigate.md
+/project:req-full README.md
 ```
 
 ---
 
 ## 使い方
 
-Claude Code を `claude_docs/` ディレクトリで起動してスラッシュコマンドを入力します。
-
 ```bash
-# claude_docs ディレクトリで Claude Code を起動
-cd claude_docs
+# 任意のディレクトリで Claude Code を起動（グローバルインストール済みの場合）
+claude
+
+# または claude_docs/ ディレクトリで起動（ローカルインストールの場合）
+cd ~/work/claude_docs
 claude
 ```
 
 ### 一式まとめて生成（推奨）
 
 ```
+# グローバルの場合
+/req-full README.md
+
+# プロジェクトローカルの場合
 /project:req-full README.md
 ```
 
@@ -70,16 +79,18 @@ claude
 
 ### 個別に実行
 
-| コマンド | 入力 | 出力 |
+| コマンド（グローバル） | 入力 | 出力 |
 |---------|------|------|
-| `/project:req-estimate README.md` | 要件定義書 | `01.customer-summary.md` `02.design-doc.md` |
-| `/project:db-design 02.design-doc.md` | 設計書 | `03.db-design.md` |
-| `/project:detail-design 02.design-doc.md` | 設計書 | `04.detail-design.md` |
-| `/project:job-api-design 04.detail-design.md` | 詳細設計書 | `08.job-api-design.md` |
-| `/project:ops-monitoring 08.job-api-design.md` | ジョブAPI設計書 | `09.ops-monitoring.md` |
-| `/project:running-cost 02.design-doc.md` | 設計書 | `05.running-cost.md` |
-| `/project:proposal 01.customer-summary.md` | 顧客サマリー | `06.proposal.md` |
-| `/project:req-investigate 02.design-doc.md` | 設計書 | `07.investigation-report.md` |
+| `/req-estimate README.md` | 要件定義書 | `01.customer-summary.md` `02.design-doc.md` |
+| `/db-design 02.design-doc.md` | 設計書 | `03.db-design.md` |
+| `/detail-design 02.design-doc.md` | 設計書 | `04.detail-design.md` |
+| `/job-api-design 04.detail-design.md` | 詳細設計書 | `08.job-api-design.md` |
+| `/ops-monitoring 08.job-api-design.md` | ジョブAPI設計書 | `09.ops-monitoring.md` |
+| `/running-cost 02.design-doc.md` | 設計書 | `05.running-cost.md` |
+| `/proposal 01.customer-summary.md` | 顧客サマリー | `06.proposal.md` |
+| `/req-investigate 02.design-doc.md` | 設計書 | `07.investigation-report.md` |
+
+> プロジェクトローカルの場合は `/` の後に `project:` を付けてください（例: `/project:req-full`）。
 
 > **出力先**: 入力ファイルと同じディレクトリに保存されます。
 

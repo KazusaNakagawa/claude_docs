@@ -1,3 +1,8 @@
+---
+name: running-cost
+description: アーキテクチャ設計書を受け取り、月額AWSインフラ費用・運用保守・障害対応コスト・年間TCOを算出した運用コスト試算書を生成する
+---
+
 # running-cost — 運用コスト試算
 
 **使い方**: `/project:running-cost <設計書のパス>`

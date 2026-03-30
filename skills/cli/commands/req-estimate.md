@@ -1,3 +1,8 @@
+---
+name: req-estimate
+description: 要件定義書（README.md や仕様書）を受け取り、技術的実現可否・設計方針・工数見積もりを判断して顧客向けサマリーと実装者向け設計書を生成する
+---
+
 # req-estimate — 要件見積もり・実現可否判断
 
 **使い方**: `/project:req-estimate <要件定義書のパス>`
