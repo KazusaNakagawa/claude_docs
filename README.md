@@ -8,37 +8,54 @@ Claude で試した内容をナレッジとして残すためのリポジトリ�
 
 ```bash
 claude_docs/
-├── output/          # req-full スキルの実行結果サンプル（★git管理外）
-│   ├── case1/       # iOS版 EnglishLearnApp — スキル開発初期の出力（連番なし）
-│   ├── case2/       # iOS版 EnglishLearnApp — req-full スキルによる出力（01.〜07.）
-│   └── case3/       # Web版 EnglishLearnApp — React SPA 拡張時の出力（01.〜07.）
+├── .claude/         # Claude Code 用設定・スキル
+│   ├── settings.json.example
+│   └── skills/      # Claude Code 向けスキル（開発作業補助系）
 │
-└── skills/          # Claude カスタムスキル集
+└── skills/          # Claude カスタムスキル集（設計支援系）
     ├── README.md    # スキル一覧・使い方・インストール手順
-    ├── install.sh   # .skill パッケージ生成スクリプト
-    ├── dist/        # パッケージ済み .skill ファイル（git管理外）
+    ├── install.sh   # Cowork 向け .skill パッケージ生成スクリプト
+    ├── cli/         # Claude Code（CLI）向けスラッシュコマンド
     ├── req-full/    # 親スキル（以下8スキルをワンショット実行）
-    ├── req-estimate/      # 設計書・工数見積もり
-    ├── db-design/         # DB設計書（ER図・テーブル定義）
-    ├── detail-design/     # 詳細設計書（シーケンス図・API仕様）
-    ├── job-api-design/    # ジョブ処理API設計書（SQS/Worker/DLQ）※条件付き
-    ├── ops-monitoring/    # 運用監視設計書（CloudWatch・Slack通知）※条件付き
-    ├── running-cost/      # 月額コスト・年間TCO
-    ├── proposal/          # 提案書（Ganttチャート・TCO）
-    └── req-investigate/   # 規約調査・ヒアリング事項レポート
+    ├── req-estimate/
+    ├── db-design/
+    ├── detail-design/
+    ├── job-api-design/
+    ├── ops-monitoring/
+    ├── running-cost/
+    ├── proposal/
+    └── req-investigate/
 ```
+
+各スキルの詳細・インストール手順は [`skills/README.md`](./skills/README.md) を参照してください。
 
 ---
 
-## output/ — ケース別サンプル
+## .claude/skills/ — 開発作業補助スキル
 
-各ケースは同じ題材（英語学習アプリ）に対して req-full スキルを実行した出力結果です。
-`app/` がアプリ本体の設計書、`aws/` が AWS インフラ拡張分の設計書を格納しています。
+Claude Code での開発作業を補助するスキルを格納しています。
 
-| ケース | 概要 | 出力ファイル |
-|--------|------|------------|
-| `case1/` | iOS版・スキル開発初期の出力。連番プレフィックスなし | `customer-summary.md` 他 |
-| `case2/` | iOS版・現行スキルによる出力 | `01.customer-summary.md` 〜 `07.investigation-report.md` |
-| `case3/` | Web版（React SPA）への拡張。既存 iOS リポジトリ + 新規設計書 | `01.customer-summary.md` 〜 `07.investigation-report.md` |
+| スキル | 説明 |
+| --- | --- |
+| `parallel-setup` | tmux + git worktree を使った並列開発環境を構築する |
+| `parallel-cleanup` | 並列開発環境（worktree・tmux セッション）を解体する |
+| `review-fix` | PR のレビューフィードバックを確認・修正・プッシュする |
+| `start` | GitHub Issue を起点として開発を開始する |
 
-req-full が生成する設計書の一覧と各スキルの詳細は [`skills/README.md`](./skills/README.md) を参照してください。
+---
+
+## skills/ — 設計支援スキル
+
+要件定義から提案書まで一式を生成するスキル群です。サンプル出力は各スキルの `evals/expected-outputs/` に格納しています。
+
+| スキル | 説明 |
+| --- | --- |
+| `req-full` | 以下8スキルをワンショット実行する親スキル |
+| `req-estimate` | 要件定義書から設計書・工数見積もりを生成 |
+| `db-design` | DB設計書（ER図・テーブル定義）を生成 |
+| `detail-design` | 詳細設計書（シーケンス図・API仕様）を生成 |
+| `job-api-design` | ジョブ処理API設計書（SQS/Worker/DLQ）を生成 ※条件付き |
+| `ops-monitoring` | 運用監視設計書（CloudWatch・Slack通知）を生成 ※条件付き |
+| `running-cost` | 月額AWSコスト・年間TCOを算出 |
+| `proposal` | 提案書（Ganttチャート・TCO）を生成 |
+| `req-investigate` | 規約調査・ヒアリング事項レポートを生成 |

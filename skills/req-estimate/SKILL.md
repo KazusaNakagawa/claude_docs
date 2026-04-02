@@ -19,7 +19,7 @@ description: |
 ## 前提となる技術スタック
 
 このスキルは以下のスタックを使う開発者向けに最適化されています:
-- **フロントエンド**: React（最新安定版）+ TypeScript（最新安定版）+ React Router（最新安定版）+ Tailwind CSS（最新安定版）
+- **フロントエンド**: React（最新安定版）+ TypeScript（最新安定版）+ React Router（最新安定版）+ Tailwind CSS v4 + shadcn/ui + Base UI
 - **バックエンド**: Python（最新安定版）+ FastAPI
 - **データベース**: PostgreSQL（最新安定版、AWS RDS サポート済み）
 - **インフラ**: AWS（ECS Fargate, Lambda, Cognito 等）
@@ -181,8 +181,8 @@ flowchart LR
 ## アーキテクチャ方針
 
 ### フロントエンド
-- 技術: React（最新安定版）+ TypeScript（最新安定版）+ React Router（最新安定版）+ Tailwind CSS（最新安定版）
-  - ※ バージョンは WebSearch で確認した最新値を記載すること（例: React 19.x, React Router v7, Tailwind CSS v4）
+- 技術: React（最新安定版）+ TypeScript（最新安定版）+ React Router（最新安定版）+ Tailwind CSS v4 + shadcn/ui + Base UI
+  - ※ バージョンは WebSearch で確認した最新値を記載すること（例: React 19.x, React Router v7, Tailwind CSS v4.x）
 - [コンポーネント構成・状態管理・ルーティングの方針]
 
 ### バックエンド

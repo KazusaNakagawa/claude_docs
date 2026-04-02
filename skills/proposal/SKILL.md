@@ -1,9 +1,9 @@
-# proposal
-
-## Description
-`01.customer-summary.md`（req-estimate の出力）または要件定義書を受け取り、**経営者・意思決定者向けの提案書**（`06.proposal.md`）を生成するスキル。
-
-技術的な話を排除し、「何が解決されるか」「いくらかかるか」「いつ終わるか」「何が心配か」を1ページで伝えることにフォーカスする。
+---
+name: proposal
+description: |
+  `01.customer-summary.md`（req-estimate の出力）または要件定義書を受け取り、経営者・意思決定者向けの提案書（`06.proposal.md`）を生成するスキル。
+  技術的な話を排除し、「何が解決されるか」「いくらかかるか」「いつ終わるか」「何が心配か」を1ページで伝えることにフォーカスする。
+---
 
 ## Trigger Conditions
 次のような状況で必ず使うこと:
