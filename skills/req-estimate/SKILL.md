@@ -182,7 +182,7 @@ flowchart LR
 
 ### フロントエンド
 - 技術: React（最新安定版）+ TypeScript（最新安定版）+ React Router（最新安定版）+ Tailwind CSS v4 + shadcn/ui + Base UI
-  - ※ バージョンは WebSearch で確認した最新値を記載すること（例: React 19.x, React Router v7, Tailwind CSS v4.x）
+  - ※ バージョンは WebSearch で確認した最新値を記載すること（例: React 19.x, React Router v7, Tailwind CSS v4.x, shadcn/ui 2.x, Base UI 1.x）
 - [コンポーネント構成・状態管理・ルーティングの方針]
 
 ### バックエンド

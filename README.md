@@ -44,6 +44,24 @@ Claude Code での開発作業を補助するスキルを格納しています�
 
 ---
 
+## skills/cli/ — CLI スラッシュコマンド
+
+Claude Code（CLI）向けのスラッシュコマンドを格納しています。
+
+| コマンド | 説明 |
+| --- | --- |
+| `db-design` | DB設計書を生成する |
+| `detail-design` | 詳細設計書を生成する |
+| `job-api-design` | ジョブ処理API設計書を生成する |
+| `ops-monitoring` | 運用監視設計書を生成する |
+| `proposal` | 提案書を生成する |
+| `req-estimate` | 設計書・工数見積もりを生成する |
+| `req-full` | 全設計スキルをワンショット実行する |
+| `req-investigate` | 規約調査・ヒアリング事項レポートを生成する |
+| `running-cost` | 月額コスト・年間TCOを算出する |
+
+---
+
 ## skills/ — 設計支援スキル
 
 要件定義から提案書まで一式を生成するスキル群です。サンプル出力は各スキルの `evals/expected-outputs/` に格納しています。
