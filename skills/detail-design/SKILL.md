@@ -1,9 +1,9 @@
-# detail-design
-
-## Description
-`02.design-doc.md`（req-estimate の出力）と `03.db-design.md` を受け取り、**実装者が迷わずコードを書き始められる詳細設計書**（`04.detail-design.md`）を生成するスキル。
-
-シーケンス図・API仕様・エラーハンドリング・環境変数一覧を含む。
+---
+name: detail-design
+description: |
+  `02.design-doc.md`（req-estimate の出力）と `03.db-design.md` を受け取り、実装者が迷わずコードを書き始められる詳細設計書（`04.detail-design.md`）を生成するスキル。
+  シーケンス図・API仕様・エラーハンドリング・環境変数一覧を含む。
+---
 
 ## Trigger Conditions
 次のような状況で必ず使うこと:

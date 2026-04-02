@@ -1,11 +1,12 @@
-# db-design
-
-## Description
-要件定義書 or 設計書（02.design-doc.md）を受け取り、DB設計書（03.db-design.md）を生成するスキル。
-- ER図（Mermaid erDiagram）
-- テーブル定義（カラム・型・制約・インデックス）
-- AWS DBサービス選定（RDS / Aurora / DynamoDB 比較）
-- マイグレーション方針（Alembic）
+---
+name: db-design
+description: |
+  要件定義書 or 設計書（02.design-doc.md）を受け取り、DB設計書（03.db-design.md）を生成するスキル。
+  - ER図（Mermaid erDiagram）
+  - テーブル定義（カラム・型・制約・インデックス）
+  - AWS DBサービス選定（RDS / Aurora / DynamoDB 比較）
+  - マイグレーション方針（Alembic）
+---
 
 **入力は2パターン対応**:
 1. `02.design-doc.md`（req-estimate スキルの出力）

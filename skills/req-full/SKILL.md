@@ -1,7 +1,8 @@
-# req-full
-
-## Description
-要件定義書（readme.md）を受け取り、**req-estimate → db-design → detail-design → job-api-design → ops-monitoring → running-cost → proposal → req-investigate** の8スキルをワンショットで順番に実行し、設計ドキュメント一式を生成する親スキル。
+---
+name: req-full
+description: |
+  要件定義書（readme.md）を受け取り、req-estimate → db-design → detail-design → job-api-design → ops-monitoring → running-cost → proposal → req-investigate の8スキルをワンショットで順番に実行し、設計ドキュメント一式を生成する親スキル。
+---
 
 生成されるファイル:
 - `01.customer-summary.md`     — 顧客向け対応可否サマリー・工数見積もり
