@@ -107,7 +107,9 @@ Analyze both external dependencies and internal module dependencies.
 cat "${TARGET_DIR:-.}/package.json" | grep -A 100 '"dependencies"'
 
 # Python
-cat "${TARGET_DIR:-.}/pyproject.toml" || cat requirements.txt || cat Pipfile
+cat "${TARGET_DIR:-.}/pyproject.toml" \
+  || cat "${TARGET_DIR:-.}/requirements.txt" \
+  || cat "${TARGET_DIR:-.}/Pipfile"
 
 # Go
 cat "${TARGET_DIR:-.}/go.mod"

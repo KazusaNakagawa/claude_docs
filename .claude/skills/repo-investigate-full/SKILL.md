@@ -138,7 +138,9 @@ find "${TARGET_DIR:-.}" -maxdepth 3 -type f \
 cat "${TARGET_DIR:-.}/package.json" | grep -A 100 '"dependencies"'
 
 # Python
-cat "${TARGET_DIR:-.}/pyproject.toml" || cat requirements.txt || cat Pipfile
+cat "${TARGET_DIR:-.}/pyproject.toml" \
+  || cat "${TARGET_DIR:-.}/requirements.txt" \
+  || cat "${TARGET_DIR:-.}/Pipfile"
 
 # Go
 cat "${TARGET_DIR:-.}/go.mod"
@@ -350,7 +352,7 @@ grep -r "prometheus\|opentelemetry\|datadog\|jaeger" \
 
 ```bash
 find "${TARGET_DIR:-.}" -maxdepth 4 \
-  \( -name "*.yml" -o -name "*.yaml" \) \
+  \( -name "*.yml" -o -name "*.yaml" -o -name "Jenkinsfile" \) \
   | grep -E '(\.github|\.gitlab|\.circleci|Jenkinsfile)' \
   | grep -v -E '(node_modules|\.git)' | head -10
 
