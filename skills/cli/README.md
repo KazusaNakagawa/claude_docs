@@ -90,6 +90,15 @@ claude
 | `/proposal 01.customer-summary.md` | 顧客サマリー | `06.proposal.md` |
 | `/req-investigate 02.design-doc.md` | 設計書 | `07.investigation-report.md` |
 
+#### 開発ユーティリティ（任意のプロジェクトで使用可能）
+
+| コマンド（グローバル） | 説明 |
+|---------|------|
+| `/repo-investigate` | 構造・依存関係・エントリーポイントを調査 |
+| `/repo-investigate src/` | 指定パスを調査 |
+| `/repo-investigate-design` | API設計・データフロー・Mermaid図（アーキテクチャ図・シーケンス図）・横断的調査（テスト/セキュリティ/CI/CD等）を日本語で生成 |
+| `/repo-investigate-full` | `repo-investigate` + `repo-investigate-design` をワンショット実行し2レポートを生成 |
+
 > プロジェクトローカルの場合は `/` の後に `project:` を付けてください（例: `/project:req-full`）。
 > **出力先**: 入力ファイルと同じディレクトリに保存されます。
 
@@ -101,17 +110,25 @@ claude
 cli/
 ├── README.md          # このファイル
 ├── install.sh         # .claude/commands/ に展開するスクリプト
-└── commands/          # スラッシュコマンド定義（薄いラッパー）
-    ├── req-full.md            ← **/req-full/SKILL.md を参照
-    ├── req-estimate.md        ← **/req-estimate/SKILL.md を参照
-    ├── db-design.md           ← **/db-design/SKILL.md を参照
-    ├── detail-design.md       ← **/detail-design/SKILL.md を参照
-    ├── job-api-design.md      ← **/job-api-design/SKILL.md を参照
-    ├── ops-monitoring.md      ← **/ops-monitoring/SKILL.md を参照
-    ├── running-cost.md        ← **/running-cost/SKILL.md を参照
-    ├── proposal.md            ← **/proposal/SKILL.md を参照
-    └── req-investigate.md     ← **/req-investigate/SKILL.md を参照
+└── commands/          # スラッシュコマンド定義
+    ├── req-full.md            ← **/req-full/SKILL.md を参照（薄いラッパー）
+    ├── req-estimate.md        ← **/req-estimate/SKILL.md を参照（薄いラッパー）
+    ├── db-design.md           ← **/db-design/SKILL.md を参照（薄いラッパー）
+    ├── detail-design.md       ← **/detail-design/SKILL.md を参照（薄いラッパー）
+    ├── job-api-design.md      ← **/job-api-design/SKILL.md を参照（薄いラッパー）
+    ├── ops-monitoring.md      ← **/ops-monitoring/SKILL.md を参照（薄いラッパー）
+    ├── running-cost.md        ← **/running-cost/SKILL.md を参照（薄いラッパー）
+    ├── proposal.md            ← **/proposal/SKILL.md を参照（薄いラッパー）
+    ├── req-investigate.md     ← **/req-investigate/SKILL.md を参照（薄いラッパー）
+    ├── repo-investigate.md          ← 自己完結型（任意プロジェクトで動作）
+    ├── repo-investigate-design.md  ← 自己完結型（API設計・データフロー・Mermaid図）
+    └── repo-investigate-full.md    ← 自己完結型（上2スキルをワンショット実行）
 ```
+
+> **薄いラッパー vs 自己完結型**
+>
+> - **薄いラッパー**: 実行時に Glob で `SKILL.md` を検索して読み込む。`claude_docs/` を含むディレクトリで実行する必要がある。
+> - **自己完結型** (`repo-investigate`): 全内容をコマンドファイルに埋め込み済み。グローバルインストールで **任意のプロジェクトから** 実行可能。
 
 ---
 

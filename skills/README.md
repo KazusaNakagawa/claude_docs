@@ -35,7 +35,25 @@ Claude デスクトップアプリ (Cowork) 用のカスタムスキル集です
 |--------|------|------|------|------|-----------|
 | [ops-monitoring](./ops-monitoring/) | 運用担当者 | CloudWatch + Slack 通知を前提とした日次監視・DLQ確認・SLO管理の運用設計書を生成（job-api-design 実行時のみ） | `08.job-api-design.md` `04.detail-design.md` | `09.ops-monitoring.md` | 「監視設計して」「日次チェック手順まとめて」「Slack通知の設計」 |
 
+### 開発ユーティリティ（CLI専用・任意のプロジェクトで使用可能）
+
+> これらのスキルは `skills/` ではなく `.claude/skills/` で管理されています。
+> Cowork（デスクトップアプリ）向けパッケージは不要で、グローバルインストールで任意のプロジェクトから使用できます。
+
+| スキル | 説明 | 呼び出し例 |
+|--------|------|-----------|
+| [repo-investigate](../.claude/skills/repo-investigate/) | リポジトリの構造・依存関係を調査してレポートを生成 | `/repo-investigate` `/repo-investigate src/` |
+| [repo-investigate-design](../.claude/skills/repo-investigate-design/) | API設計・データフロー・Mermaid図（アーキテクチャ図・シーケンス図）および横断的調査（テスト/セキュリティ/CI/CD等）を日本語で生成 | `/repo-investigate-design` `/repo-investigate-design src/` |
+| [repo-investigate-full](../.claude/skills/repo-investigate-full/) | `repo-investigate` + `repo-investigate-design` をワンショット実行し2レポートを生成 | `/repo-investigate-full` `/repo-investigate-full src/` |
+
 ### スキルの関係図
+
+```text
+repo-investigate-full（開発ユーティリティ・ワンショット）
+│
+├── repo-investigate        → repo-investigation.ja.md  （構造・依存関係・エントリーポイント）
+└── repo-investigate-design → repo-design.ja.md         （API設計・データフロー・Mermaid図・横断調査）
+```
 
 ```text
 req-full（親・ワンショット）
@@ -221,14 +239,28 @@ bash skills/install.sh new-skill
 Claude Code（ターミナル）でスラッシュコマンドとして使う場合:
 
 ```bash
-# claude_docs リポジトリのルートで一括インストール
+# ユーザーグローバルにインストール（推奨: どのプロジェクトからでも使える）
+bash skills/cli/install.sh --global
+
+# プロジェクトローカルにインストール
 bash skills/cli/install.sh
 
 # 特定プロジェクトにインストール
 bash skills/cli/install.sh /path/to/your-project
 ```
 
-インストール後は Claude Code で `/project:req-full README.md` のように呼び出せます。
+インストール後は Claude Code で以下のように呼び出せます:
+
+```bash
+# 設計スキル（グローバル）
+/req-full README.md
+
+# リポジトリ調査（グローバル・任意のプロジェクトで使用可能）
+/repo-investigate
+/repo-investigate src/
+```
+
+> **`/repo-investigate` はグローバルインストール推奨**: 任意のプロジェクトで使うため `--global` でインストールすると便利です。
 
 ---
 
