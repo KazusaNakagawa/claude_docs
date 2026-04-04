@@ -24,7 +24,7 @@ Investigate codebase structure, architecture overview, and dependency relationsh
 
 Parse `$ARGUMENTS` to extract the `--lang` flag and target path.
 
-```
+```text
 LANG_MODE = extract "--lang <value>" from $ARGUMENTS, default = "both"
 TARGET_DIR = remaining argument after removing --lang flag, default = "."
 ```
@@ -137,7 +137,7 @@ grep -r "^import\|^from\|^require\|^use " ${TARGET_DIR:-.} \
 
 Determine output paths based on LANG_MODE, then write reports using the Write tool.
 
-```
+```text
 If docs/ exists in TARGET_DIR:
   EN_FILE = "${TARGET_DIR}/docs/repo-investigation.en.md"
   JA_FILE = "${TARGET_DIR}/docs/repo-investigation.ja.md"

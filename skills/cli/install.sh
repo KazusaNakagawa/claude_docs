@@ -106,7 +106,7 @@ else
   echo "  /project:proposal <顧客サマリー>      # 提案書"
   echo "  /project:req-investigate <設計書>     # 規約調査レポート"
   echo ""
-  echo "  # 開発ユーティリティ（任意のプロジェクトで使用可能）"
+  echo "  # 開発ユーティリティ（このプロジェクトで使用可能）"
   echo "  /project:repo-investigate [パス]             # リポジトリ構造・依存関係の調査"
   echo "  /project:repo-investigate-design [パス]      # API設計・データフロー・Mermaid図"
   echo "  /project:repo-investigate-full [パス]        # 上2スキルをワンショット実行"

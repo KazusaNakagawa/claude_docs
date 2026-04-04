@@ -53,6 +53,9 @@ Supported values: `ja`, `en`, `both`
 ```
 
 > サブスキルが見つかった場合: そのスキルの Workflow セクションを Step 1・Step 2 として実行する。
+> その際、必ず解決済みの引数を明示的に引き継ぐこと:
+> - repo-investigate: `/repo-investigate ${TARGET_DIR} --lang ${LANG_MODE}`
+> - repo-investigate-design: `/repo-investigate-design ${TARGET_DIR} --lang ${LANG_MODE}`
 > 見つからない場合: 以下のインライン手順（Phase 1〜9）を実行する。
 
 ---
@@ -381,12 +384,14 @@ Phase 5〜8 の調査結果をまとめる。テンプレートは repo-investig
 ✅ repo-investigate-full 完了 — {生成ファイル数}ファイルを生成しました
 
 【構造・依存関係】
-📁 repo-investigation.ja.md  — ディレクトリ構造・エントリーポイント・依存関係
+📁 repo-investigation.{ja|en}.md  — ディレクトリ構造・エントリーポイント・依存関係
+  ※ LANG_MODE=ja → .ja.md / LANG_MODE=en → .en.md / LANG_MODE=both → 両方
 
 【設計・アーキテクチャ】
-🏗️  repo-design.ja.md         — API設計・データフロー・Mermaid図・横断的調査
+🏗️  repo-design.{ja|en}.md         — API設計・データフロー・Mermaid図・横断的調査
+  ※ LANG_MODE=ja → .ja.md / LANG_MODE=en → .en.md / LANG_MODE=both → 両方
 
-出力先: {ファイルパスの一覧}
+出力先: {実際に生成したファイルパスの一覧}
 ```
 
 ---

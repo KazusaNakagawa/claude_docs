@@ -111,24 +111,24 @@ cli/
 ├── README.md          # このファイル
 ├── install.sh         # .claude/commands/ に展開するスクリプト
 └── commands/          # スラッシュコマンド定義
-    ├── req-full.md            ← **/req-full/SKILL.md を参照（薄いラッパー）
-    ├── req-estimate.md        ← **/req-estimate/SKILL.md を参照（薄いラッパー）
-    ├── db-design.md           ← **/db-design/SKILL.md を参照（薄いラッパー）
-    ├── detail-design.md       ← **/detail-design/SKILL.md を参照（薄いラッパー）
-    ├── job-api-design.md      ← **/job-api-design/SKILL.md を参照（薄いラッパー）
-    ├── ops-monitoring.md      ← **/ops-monitoring/SKILL.md を参照（薄いラッパー）
-    ├── running-cost.md        ← **/running-cost/SKILL.md を参照（薄いラッパー）
-    ├── proposal.md            ← **/proposal/SKILL.md を参照（薄いラッパー）
-    ├── req-investigate.md     ← **/req-investigate/SKILL.md を参照（薄いラッパー）
+    ├── req-full.md            ← `**/req-full/SKILL.md` を参照（薄いラッパー）
+    ├── req-estimate.md        ← `**/req-estimate/SKILL.md` を参照（薄いラッパー）
+    ├── db-design.md           ← `**/db-design/SKILL.md` を参照（薄いラッパー）
+    ├── detail-design.md       ← `**/detail-design/SKILL.md` を参照（薄いラッパー）
+    ├── job-api-design.md      ← `**/job-api-design/SKILL.md` を参照（薄いラッパー）
+    ├── ops-monitoring.md      ← `**/ops-monitoring/SKILL.md` を参照（薄いラッパー）
+    ├── running-cost.md        ← `**/running-cost/SKILL.md` を参照（薄いラッパー）
+    ├── proposal.md            ← `**/proposal/SKILL.md` を参照（薄いラッパー）
+    ├── req-investigate.md     ← `**/req-investigate/SKILL.md` を参照（薄いラッパー）
     ├── repo-investigate.md          ← 自己完結型（任意プロジェクトで動作）
-    ├── repo-investigate-design.md  ← 自己完結型（API設計・データフロー・Mermaid図）
-    └── repo-investigate-full.md    ← 自己完結型（上2スキルをワンショット実行）
+    ├── repo-investigate-design.md  ← 自己完結型（任意プロジェクトで動作）
+    └── repo-investigate-full.md    ← 自己完結型（任意プロジェクトで動作）
 ```
 
 > **薄いラッパー vs 自己完結型**
 >
 > - **薄いラッパー**: 実行時に Glob で `SKILL.md` を検索して読み込む。`claude_docs/` を含むディレクトリで実行する必要がある。
-> - **自己完結型** (`repo-investigate`): 全内容をコマンドファイルに埋め込み済み。グローバルインストールで **任意のプロジェクトから** 実行可能。
+> - **自己完結型** (`repo-investigate`, `repo-investigate-design`, `repo-investigate-full`): 全内容をコマンドファイルに埋め込み済み。グローバルインストールで **任意のプロジェクトから** 実行可能。
 
 ---
 
