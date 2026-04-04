@@ -65,12 +65,12 @@ Map the top-level directory layout and understand module boundaries.
 
 ```bash
 # Directory tree (depth 2-3)
-find ${TARGET_DIR:-.} -maxdepth 3 -type d \
+find "${TARGET_DIR:-.}" -maxdepth 3 -type d \
   | grep -v -E '(node_modules|\.git|__pycache__|\.venv|dist|build|\.next)' \
   | sort
 
 # Count source files by extension
-find ${TARGET_DIR:-.} -type f \
+find "${TARGET_DIR:-.}" -type f \
   | grep -v -E '(node_modules|\.git|__pycache__|\.venv|dist|build)' \
   | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -20
 ```
@@ -87,7 +87,7 @@ Locate entry points, main modules, and key abstractions.
 
 ```bash
 # Common entry point patterns
-find ${TARGET_DIR:-.} -maxdepth 3 -type f \
+find "${TARGET_DIR:-.}" -maxdepth 3 -type f \
   | grep -E '(main\.|index\.|app\.|server\.|cmd/)' \
   | grep -v -E '(node_modules|\.git|test|spec)'
 ```
@@ -122,7 +122,7 @@ Use Grep to trace import/require patterns across the codebase:
 
 ```bash
 # Find import patterns (adjust pattern per language)
-grep -r "^import\|^from\|^require\|^use " ${TARGET_DIR:-.} \
+grep -r "^import\|^from\|^require\|^use " "${TARGET_DIR:-.}" \
   --include="*.ts" --include="*.py" --include="*.go" \
   -l | head -30
 ```

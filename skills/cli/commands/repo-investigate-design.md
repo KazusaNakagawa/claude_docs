@@ -41,7 +41,7 @@ HTTP ルート・コントローラー・ハンドラーを探索して API 一�
 
 ```bash
 # ルート定義ファイルを探す
-find ${TARGET_DIR:-.} -maxdepth 5 -type f \
+find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
   | grep -E '(route|router|controller|handler|api)' \
   | grep -v -E '(node_modules|\.git|__pycache__|dist|build|test|spec)' \
   | head -30
@@ -50,15 +50,15 @@ find ${TARGET_DIR:-.} -maxdepth 5 -type f \
 
 # FastAPI / Flask (Python)
 grep -r "@app\.\(get\|post\|put\|patch\|delete\)\|@router\.\(get\|post\|put\|patch\|delete\)" \
-  ${TARGET_DIR:-.} --include="*.py" -l
+  "${TARGET_DIR:-.}" --include="*.py" -l
 
 # Express / Next.js (TypeScript/JavaScript)
 grep -r "router\.\(get\|post\|put\|patch\|delete\)\|app\.\(get\|post\|put\|patch\|delete\)" \
-  ${TARGET_DIR:-.} --include="*.ts" --include="*.js" -l
+  "${TARGET_DIR:-.}" --include="*.ts" --include="*.js" -l
 
 # Go (net/http / Gin / Echo)
 grep -r "http\.HandleFunc\|r\.GET\|r\.POST\|e\.GET\|e\.POST" \
-  ${TARGET_DIR:-.} --include="*.go" -l
+  "${TARGET_DIR:-.}" --include="*.go" -l
 ```
 
 ルートファイルを Read して各エンドポイントの詳細（メソッド・パス・ハンドラー・認証要否）を収集する。
@@ -76,19 +76,19 @@ grep -r "http\.HandleFunc\|r\.GET\|r\.POST\|e\.GET\|e\.POST" \
 
 ```bash
 # サービス層・リポジトリ層のファイルを探す
-find ${TARGET_DIR:-.} -maxdepth 5 -type f \
+find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
   | grep -E '(service|repository|repo|store|dao|usecase|domain)' \
   | grep -v -E '(node_modules|\.git|__pycache__|dist|build|test|spec)' \
   | head -20
 
 # 外部サービス呼び出しを探す（HTTP クライアント・SDK）
 grep -r "requests\.\|httpx\.\|axios\.\|fetch(\|http\.Get\|http\.Post" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l
 
 # キャッシュ・キュー・DB クライアントの使用箇所
 grep -r "redis\.\|cache\.\|sqs\.\|rabbitmq\.\|kafka\." \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l
 ```
 
@@ -187,14 +187,14 @@ sequenceDiagram
 
 ```bash
 # テストファイルを探す
-find ${TARGET_DIR:-.} -maxdepth 5 -type f \
+find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
   | grep -E '(test|spec|__test__)' \
   | grep -v -E '(node_modules|\.git|dist|build)' \
   | head -30
 
 # テストフレームワーク検出
 grep -r "pytest\|unittest\|jest\|vitest\|go test\|rspec\|mocha" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.toml" --include="*.json" --include="*.yml" --include="*.yaml" -l
 ```
 
@@ -205,15 +205,15 @@ grep -r "pytest\|unittest\|jest\|vitest\|go test\|rspec\|mocha" \
 ```bash
 # 認証・認可の実装を探す
 grep -r "jwt\|bearer\|oauth\|session\|middleware.*auth\|auth.*middleware" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l -i
 
 # シークレット管理
-find ${TARGET_DIR:-.} -maxdepth 3 \( -name "*.env*" -o -name ".env*" \) \
+find "${TARGET_DIR:-.}" -maxdepth 3 \( -name "*.env*" -o -name ".env*" \) \
   | grep -v -E '(node_modules|\.git)' | head -10
 
 grep -r "os\.environ\|process\.env\|os\.Getenv\|secrets\." \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 ```
 
@@ -223,7 +223,7 @@ grep -r "os\.environ\|process\.env\|os\.Getenv\|secrets\." \
 
 ```bash
 # 設定ファイルを探す
-find ${TARGET_DIR:-.} -maxdepth 3 -type f \
+find "${TARGET_DIR:-.}" -maxdepth 3 -type f \
   | grep -E '\.(env|yaml|yml|toml|ini|conf)$' \
   | grep -v -E '(node_modules|\.git|dist|build)' | head -20
 ```
@@ -235,12 +235,12 @@ find ${TARGET_DIR:-.} -maxdepth 3 -type f \
 ```bash
 # ロギング実装を探す
 grep -r "logging\.\|logger\.\|log\.\|structlog\.\|winston\.\|zap\." \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 
 # メトリクス・トレーシング
 grep -r "prometheus\|statsd\|datadog\|opentelemetry\|jaeger\|zipkin" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" \
   --include="*.toml" --include="*.json" -l | head -10
 ```
@@ -251,12 +251,12 @@ grep -r "prometheus\|statsd\|datadog\|opentelemetry\|jaeger\|zipkin" \
 
 ```bash
 # CI 設定ファイルを探す
-find ${TARGET_DIR:-.} -maxdepth 4 \
+find "${TARGET_DIR:-.}" -maxdepth 4 \
   \( -name "*.yml" -o -name "*.yaml" \) \
   | grep -E '(\.github|\.gitlab|\.circleci|bitbucket|jenkins|Jenkinsfile)' \
   | grep -v -E '(node_modules|\.git)' | head -10
 
-ls -1 ${TARGET_DIR:-.}/.github/workflows/ 2>/dev/null || true
+ls -1 "${TARGET_DIR:-.}"/.github/workflows/ 2>/dev/null || true
 ```
 
 CI 設定ファイルを Read してワークフローのステップを確認する。
@@ -268,12 +268,12 @@ CI 設定ファイルを Read してワークフローのステップを確認�
 ```bash
 # カスタム例外・エラー型を探す
 grep -r "class.*Error\|class.*Exception\|type.*Error\|errors\.New\|fmt\.Errorf" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 
 # グローバルエラーハンドラーを探す
 grep -r "exception_handler\|errorHandler\|middleware.*error\|error.*middleware" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 ```
 
@@ -496,6 +496,205 @@ graph LR
 ---
 
 ## 11. 課題・改善提案
+
+- [ ] ...
+- [ ] ...
+````
+
+---
+
+## Report Template (English)
+
+````markdown
+# Repository Design Investigation: [Project Name]
+
+**Date**: YYYY-MM-DD
+**Target**: [path investigated]
+
+---
+
+## 1. Architecture Diagram
+
+```mermaid
+graph TB
+  subgraph Client["Client"]
+    B["Browser / Mobile"]
+  end
+  subgraph API["API Layer"]
+    R["Router"]
+    M["Auth Middleware"]
+  end
+  subgraph Service["Service Layer"]
+    S1["[Service Name]"]
+  end
+  subgraph Data["Data Layer"]
+    DB[("PostgreSQL")]
+    Cache[("Redis")]
+  end
+  B --> R
+  R --> M --> S1
+  S1 --> DB
+  S1 --> Cache
+```
+
+---
+
+## 2. Data Flow
+
+### Request Processing Flow
+
+| Phase | Processing | Component |
+|-------|-----------|-----------|
+| Receive | HTTP request routing | Router |
+| Auth | JWT / session validation | Auth Middleware |
+| Validation | Input validation | Schema / Validator |
+| Business Logic | Core logic execution | Service Layer |
+| Data Access | DB read/write | Repository Layer |
+| Response | Response generation | API Layer |
+
+### External Service Dependencies
+
+| Service | Purpose | Called From |
+|---------|---------|------------|
+| | | |
+
+---
+
+## 3. API Endpoints
+
+| Method | Path | Description | Auth | Handler |
+|--------|------|-------------|------|---------|
+| GET | /api/v1/... | | Required / None | |
+| POST | /api/v1/... | | | |
+
+---
+
+## 4. Sequence Diagrams
+
+### 4.1 Authentication Flow
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant A as API
+  participant S as Auth Service
+  participant DB as Database
+
+  C->>A: POST /auth/login (email, password)
+  A->>S: Validate credentials
+  S->>DB: Find user
+  DB-->>S: User record
+  alt Success
+    S-->>A: User info
+    A-->>C: 200 OK (JWT token)
+  else Failure
+    S-->>A: Auth error
+    A-->>C: 401 Unauthorized
+  end
+```
+
+### 4.2 [Main Flow Name]
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant A as API
+  participant S as Service
+  participant DB as Database
+
+  C->>A: [METHOD] [path]
+  A->>S: [processing]
+  S->>DB: [query]
+  DB-->>S: [result]
+  S-->>A: [data]
+  A-->>C: 200 OK
+```
+
+---
+
+## 5. Test Structure
+
+| Type | Framework | Scope | Coverage Trend |
+|------|-----------|-------|----------------|
+| Unit | | | |
+| Integration | | | |
+| E2E | | | |
+
+**Observations:**
+- Well-covered areas: ...
+- Under-tested areas: ...
+
+---
+
+## 6. Security Patterns
+
+| Item | Implementation |
+|------|---------------|
+| Authentication | |
+| Authorization | |
+| Secret Management | |
+| Input Validation | |
+| CORS / CSRF | |
+
+---
+
+## 7. Environment Variables & Configuration
+
+### Required Environment Variables
+
+| Variable | Purpose | Required |
+|----------|---------|---------|
+| | | ✅ / ⚠️ |
+
+### Configuration Files
+
+| File | Purpose |
+|------|---------|
+| | |
+
+---
+
+## 8. Observability
+
+| Item | Status | Library / Service |
+|------|--------|------------------|
+| Logging | | |
+| Metrics | | |
+| Tracing | | |
+| Health Check | | |
+
+---
+
+## 9. Error Handling Patterns
+
+| Pattern | Location | Description |
+|---------|---------|-------------|
+| Global Handler | | |
+| Custom Error Types | | |
+| Retry Logic | | |
+
+---
+
+## 10. CI/CD Pipeline
+
+```mermaid
+graph LR
+  Push["Code Push"] --> Lint["Lint"]
+  Lint --> Test["Test"]
+  Test --> Build["Build"]
+  Build --> Deploy["Deploy"]
+```
+
+| Step | Tool | Description |
+|------|------|-------------|
+| Lint | | |
+| Test | | |
+| Build | | |
+| Deploy | | |
+
+---
+
+## 11. Findings & Improvement Suggestions
 
 - [ ] ...
 - [ ] ...

@@ -24,10 +24,10 @@ allowed-tools: Glob, Grep, Read, Write, Bash(git:*), Bash(cat:*), Bash(ls:*), Ba
 
 | ファイル | 内容 |
 |---------|------|
-| `repo-investigation.ja.md` | 構造・依存関係・エントリーポイント調査レポート |
-| `repo-design.ja.md` | API設計・データフロー・Mermaid図・横断的調査レポート |
+| `repo-investigation.[ja/en].md` | 構造・依存関係・エントリーポイント調査レポート |
+| `repo-design.[ja/en].md` | API設計・データフロー・Mermaid図・横断的調査レポート |
 
-（`--lang en` の場合は `.en.md`、`--lang both` の場合は両言語）
+（`--lang ja` → `.ja.md` / `--lang en` → `.en.md` / `--lang both` → 両方生成）
 
 ## Language Detection
 
@@ -52,7 +52,7 @@ Supported values: `ja`, `en`, `both`
 2. repo-investigate-design — **/repo-investigate-design/SKILL.md
 ```
 
-> サブスキルが見つかった場合: そのスキルの Workflow セクションを Step 1・Step 2 として実行する。
+> サブスキルが見つかった場合: 読み込んだ SKILL.md の全ステップを Step 1・Step 2 として実行する。
 > その際、必ず解決済みの引数を明示的に引き継ぐこと:
 > - repo-investigate: `/repo-investigate ${TARGET_DIR} --lang ${LANG_MODE}`
 > - repo-investigate-design: `/repo-investigate-design ${TARGET_DIR} --lang ${LANG_MODE}`
@@ -96,12 +96,12 @@ cat build.gradle        # Java/Gradle
 
 ```bash
 # ディレクトリツリー（深さ 2〜3）
-find ${TARGET_DIR:-.} -maxdepth 3 -type d \
+find "${TARGET_DIR:-.}" -maxdepth 3 -type d \
   | grep -v -E '(node_modules|\.git|__pycache__|\.venv|dist|build|\.next)' \
   | sort
 
 # 拡張子別ファイル数
-find ${TARGET_DIR:-.} -type f \
+find "${TARGET_DIR:-.}" -type f \
   | grep -v -E '(node_modules|\.git|__pycache__|\.venv|dist|build)' \
   | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -20
 ```
@@ -116,7 +116,7 @@ find ${TARGET_DIR:-.} -type f \
 
 ```bash
 # 一般的なエントリーポイントパターン
-find ${TARGET_DIR:-.} -maxdepth 3 -type f \
+find "${TARGET_DIR:-.}" -maxdepth 3 -type f \
   | grep -E '(main\.|index\.|app\.|server\.|cmd/)' \
   | grep -v -E '(node_modules|\.git|test|spec)'
 ```
@@ -151,7 +151,7 @@ cat Gemfile
 
 ```bash
 # インポートパターンを Grep（言語に応じてパターンを調整）
-grep -r "^import\|^from\|^require\|^use " ${TARGET_DIR:-.} \
+grep -r "^import\|^from\|^require\|^use " "${TARGET_DIR:-.}" \
   --include="*.ts" --include="*.py" --include="*.go" \
   -l | head -30
 ```
@@ -166,22 +166,22 @@ HTTP ルート・コントローラー・ハンドラーを探索して API 一�
 
 ```bash
 # ルート定義ファイルを探す
-find ${TARGET_DIR:-.} -maxdepth 5 -type f \
+find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
   | grep -E '(route|router|controller|handler|api)' \
   | grep -v -E '(node_modules|\.git|__pycache__|dist|build|test|spec)' \
   | head -30
 
 # FastAPI / Flask (Python)
 grep -r "@app\.\(get\|post\|put\|patch\|delete\)\|@router\.\(get\|post\|put\|patch\|delete\)" \
-  ${TARGET_DIR:-.} --include="*.py" -l
+  "${TARGET_DIR:-.}" --include="*.py" -l
 
 # Express / Next.js (TypeScript/JavaScript)
 grep -r "router\.\(get\|post\|put\|patch\|delete\)\|app\.\(get\|post\|put\|patch\|delete\)" \
-  ${TARGET_DIR:-.} --include="*.ts" --include="*.js" -l
+  "${TARGET_DIR:-.}" --include="*.ts" --include="*.js" -l
 
 # Go (net/http / Gin / Echo)
 grep -r "http\.HandleFunc\|r\.GET\|r\.POST\|e\.GET\|e\.POST" \
-  ${TARGET_DIR:-.} --include="*.go" -l
+  "${TARGET_DIR:-.}" --include="*.go" -l
 ```
 
 ルートファイルを Read して各エンドポイントの詳細（メソッド・パス・ハンドラー・認証要否）を収集する。
@@ -196,19 +196,19 @@ grep -r "http\.HandleFunc\|r\.GET\|r\.POST\|e\.GET\|e\.POST" \
 
 ```bash
 # サービス層・リポジトリ層のファイルを探す
-find ${TARGET_DIR:-.} -maxdepth 5 -type f \
+find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
   | grep -E '(service|repository|repo|store|dao|usecase|domain)' \
   | grep -v -E '(node_modules|\.git|__pycache__|dist|build|test|spec)' \
   | head -20
 
 # 外部サービス呼び出し
 grep -r "requests\.\|httpx\.\|axios\.\|fetch(\|http\.Get\|http\.Post" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l
 
 # キャッシュ・キュー・DB クライアント
 grep -r "redis\.\|cache\.\|sqs\.\|rabbitmq\.\|kafka\." \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l
 ```
 
@@ -281,13 +281,13 @@ sequenceDiagram
 #### 8-1: テスト構成
 
 ```bash
-find ${TARGET_DIR:-.} -maxdepth 5 -type f \
+find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
   | grep -E '(test|spec|__test__)' \
   | grep -v -E '(node_modules|\.git|dist|build)' \
   | head -30
 
 grep -r "pytest\|unittest\|jest\|vitest\|rspec\|mocha" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.toml" --include="*.json" --include="*.yml" -l
 ```
 
@@ -295,17 +295,17 @@ grep -r "pytest\|unittest\|jest\|vitest\|rspec\|mocha" \
 
 ```bash
 grep -r "jwt\|bearer\|oauth\|session\|auth.*middleware" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l -i | head -10
 
-find ${TARGET_DIR:-.} -maxdepth 3 \( -name "*.env*" -o -name ".env*" \) \
+find "${TARGET_DIR:-.}" -maxdepth 3 \( -name "*.env*" -o -name ".env*" \) \
   | grep -v -E '(node_modules|\.git)' | head -10
 ```
 
 #### 8-3: 設定・環境変数管理
 
 ```bash
-find ${TARGET_DIR:-.} -maxdepth 3 -type f \
+find "${TARGET_DIR:-.}" -maxdepth 3 -type f \
   | grep -E '\.(env|yaml|yml|toml|ini|conf)$' \
   | grep -v -E '(node_modules|\.git|dist|build)' | head -20
 ```
@@ -314,11 +314,11 @@ find ${TARGET_DIR:-.} -maxdepth 3 -type f \
 
 ```bash
 grep -r "logging\.\|logger\.\|structlog\.\|winston\.\|zap\." \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 
 grep -r "prometheus\|opentelemetry\|datadog\|jaeger" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" \
   --include="*.toml" --include="*.json" -l | head -10
 ```
@@ -326,23 +326,23 @@ grep -r "prometheus\|opentelemetry\|datadog\|jaeger" \
 #### 8-5: CI/CD パイプライン
 
 ```bash
-find ${TARGET_DIR:-.} -maxdepth 4 \
+find "${TARGET_DIR:-.}" -maxdepth 4 \
   \( -name "*.yml" -o -name "*.yaml" \) \
   | grep -E '(\.github|\.gitlab|\.circleci|Jenkinsfile)' \
   | grep -v -E '(node_modules|\.git)' | head -10
 
-ls -1 ${TARGET_DIR:-.}/.github/workflows/ 2>/dev/null || true
+ls -1 "${TARGET_DIR:-.}"/.github/workflows/ 2>/dev/null || true
 ```
 
 #### 8-6: エラーハンドリングパターン
 
 ```bash
 grep -r "class.*Error\|class.*Exception\|errors\.New\|fmt\.Errorf" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 
 grep -r "exception_handler\|errorHandler\|middleware.*error" \
-  ${TARGET_DIR:-.} \
+  "${TARGET_DIR:-.}" \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 ```
 
