@@ -2,7 +2,7 @@
 name: repo-investigate
 description: Investigate repository structure, architecture, and dependencies
 argument-hint: "[target-path] [--lang en|ja|both]"
-allowed-tools: Glob, Grep, Read, Write, Bash(git:*), Bash(cat:*), Bash(ls:*), Bash(find:*)
+allowed-tools: Glob, Grep, Read, Write, Bash(git:*), Bash(cat:*), Bash(ls:*), Bash(find:*), Bash(grep:*), Bash(sort:*), Bash(sed:*), Bash(uniq:*), Bash(head:*)
 ---
 
 # Repository Investigation

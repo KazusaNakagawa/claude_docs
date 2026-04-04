@@ -2,7 +2,7 @@
 name: repo-investigate-full
 description: Run repo-investigate + repo-investigate-design in one shot. Generates structure report and design report (data flow, API, Mermaid diagrams) for a repository.
 argument-hint: "[target-path] [--lang ja|en|both]"
-allowed-tools: Glob, Grep, Read, Write, Bash(git:*), Bash(cat:*), Bash(ls:*), Bash(find:*)
+allowed-tools: Glob, Grep, Read, Write, Bash(git:*), Bash(cat:*), Bash(ls:*), Bash(find:*), Bash(grep:*), Bash(sort:*), Bash(sed:*), Bash(uniq:*), Bash(head:*)
 ---
 
 # リポジトリ調査フル (Full Repository Investigation)

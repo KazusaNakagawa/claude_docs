@@ -2,7 +2,7 @@
 name: repo-investigate-design
 description: Investigate data flow, API endpoints, and generate Mermaid architecture/sequence diagrams for a repository (Japanese-first output)
 argument-hint: "[target-path] [--lang ja|en|both]"
-allowed-tools: Glob, Grep, Read, Write, Bash(git:*), Bash(cat:*), Bash(ls:*), Bash(find:*)
+allowed-tools: Glob, Grep, Read, Write, Bash(git:*), Bash(cat:*), Bash(ls:*), Bash(find:*), Bash(grep:*), Bash(sort:*), Bash(sed:*), Bash(uniq:*), Bash(head:*)
 ---
 
 # リポジトリ設計調査 (Design Investigation)
