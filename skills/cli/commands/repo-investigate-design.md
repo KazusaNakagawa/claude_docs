@@ -84,11 +84,15 @@ find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
 # 外部サービス呼び出しを探す（HTTP クライアント・SDK）
 grep -r "requests\.\|httpx\.\|axios\.\|fetch(\|http\.Get\|http\.Post" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l
 
 # キャッシュ・キュー・DB クライアントの使用箇所
 grep -r "redis\.\|cache\.\|sqs\.\|rabbitmq\.\|kafka\." \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l
 ```
 
@@ -195,6 +199,8 @@ find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
 # テストフレームワーク検出
 grep -r "pytest\|unittest\|jest\|vitest\|go test\|rspec\|mocha" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.toml" --include="*.json" --include="*.yml" --include="*.yaml" -l
 ```
 
@@ -206,6 +212,8 @@ grep -r "pytest\|unittest\|jest\|vitest\|go test\|rspec\|mocha" \
 # 認証・認可の実装を探す
 grep -r "jwt\|bearer\|oauth\|session\|middleware.*auth\|auth.*middleware" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l -i
 
 # シークレット管理
@@ -214,6 +222,8 @@ find "${TARGET_DIR:-.}" -maxdepth 3 \( -name "*.env*" -o -name ".env*" \) \
 
 grep -r "os\.environ\|process\.env\|os\.Getenv\|secrets\." \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 ```
 
@@ -236,11 +246,15 @@ find "${TARGET_DIR:-.}" -maxdepth 3 -type f \
 # ロギング実装を探す
 grep -r "logging\.\|logger\.\|log\.\|structlog\.\|winston\.\|zap\." \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 
 # メトリクス・トレーシング
 grep -r "prometheus\|statsd\|datadog\|opentelemetry\|jaeger\|zipkin" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" \
   --include="*.toml" --include="*.json" -l | head -10
 ```
@@ -269,11 +283,15 @@ CI 設定ファイルを Read してワークフローのステップを確認�
 # カスタム例外・エラー型を探す
 grep -r "class.*Error\|class.*Exception\|type.*Error\|errors\.New\|fmt\.Errorf" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 
 # グローバルエラーハンドラーを探す
 grep -r "exception_handler\|errorHandler\|middleware.*error\|error.*middleware" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 ```
 

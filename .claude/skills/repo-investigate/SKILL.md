@@ -41,15 +41,15 @@ Identify the project type and technology stack.
 
 ```bash
 # Check root-level files
-ls -1
+ls -1 "${TARGET_DIR:-.}"
 
 # Detect package manager / build tool
-cat package.json        # Node.js
-cat pyproject.toml      # Python
-cat go.mod              # Go
-cat Cargo.toml          # Rust
-cat pom.xml             # Java/Maven
-cat build.gradle        # Java/Gradle
+cat "${TARGET_DIR:-.}/package.json"        # Node.js
+cat "${TARGET_DIR:-.}/pyproject.toml"      # Python
+cat "${TARGET_DIR:-.}/go.mod"              # Go
+cat "${TARGET_DIR:-.}/Cargo.toml"          # Rust
+cat "${TARGET_DIR:-.}/pom.xml"             # Java/Maven
+cat "${TARGET_DIR:-.}/build.gradle"        # Java/Gradle
 ```
 
 **Output:**
@@ -104,16 +104,16 @@ Analyze both external dependencies and internal module dependencies.
 
 ```bash
 # Node.js
-cat package.json | grep -A 100 '"dependencies"'
+cat "${TARGET_DIR:-.}/package.json" | grep -A 100 '"dependencies"'
 
 # Python
-cat pyproject.toml || cat requirements.txt || cat Pipfile
+cat "${TARGET_DIR:-.}/pyproject.toml" || cat requirements.txt || cat Pipfile
 
 # Go
-cat go.mod
+cat "${TARGET_DIR:-.}/go.mod"
 
 # Ruby
-cat Gemfile
+cat "${TARGET_DIR:-.}/Gemfile"
 ```
 
 #### Internal dependencies
@@ -123,6 +123,8 @@ Use Grep to trace import/require patterns across the codebase:
 ```bash
 # Find import patterns (adjust pattern per language)
 grep -r "^import\|^from\|^require\|^use " "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.ts" --include="*.py" --include="*.go" \
   -l | head -30
 ```

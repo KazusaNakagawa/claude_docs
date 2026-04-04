@@ -70,15 +70,15 @@ Supported values: `ja`, `en`, `both`
 
 ```bash
 # ルートファイルを確認
-ls -1
+ls -1 "${TARGET_DIR:-.}"
 
 # パッケージマネージャー / ビルドツールを検出
-cat package.json        # Node.js
-cat pyproject.toml      # Python
-cat go.mod              # Go
-cat Cargo.toml          # Rust
-cat pom.xml             # Java/Maven
-cat build.gradle        # Java/Gradle
+cat "${TARGET_DIR:-.}/package.json"        # Node.js
+cat "${TARGET_DIR:-.}/pyproject.toml"      # Python
+cat "${TARGET_DIR:-.}/go.mod"              # Go
+cat "${TARGET_DIR:-.}/Cargo.toml"          # Rust
+cat "${TARGET_DIR:-.}/pom.xml"             # Java/Maven
+cat "${TARGET_DIR:-.}/build.gradle"        # Java/Gradle
 ```
 
 **Output:**
@@ -135,16 +135,16 @@ find "${TARGET_DIR:-.}" -maxdepth 3 -type f \
 
 ```bash
 # Node.js
-cat package.json | grep -A 100 '"dependencies"'
+cat "${TARGET_DIR:-.}/package.json" | grep -A 100 '"dependencies"'
 
 # Python
-cat pyproject.toml || cat requirements.txt || cat Pipfile
+cat "${TARGET_DIR:-.}/pyproject.toml" || cat requirements.txt || cat Pipfile
 
 # Go
-cat go.mod
+cat "${TARGET_DIR:-.}/go.mod"
 
 # Ruby
-cat Gemfile
+cat "${TARGET_DIR:-.}/Gemfile"
 ```
 
 #### 内部依存関係
@@ -152,6 +152,8 @@ cat Gemfile
 ```bash
 # インポートパターンを Grep（言語に応じてパターンを調整）
 grep -r "^import\|^from\|^require\|^use " "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.ts" --include="*.py" --include="*.go" \
   -l | head -30
 ```
@@ -173,15 +175,24 @@ find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
 
 # FastAPI / Flask (Python)
 grep -r "@app\.\(get\|post\|put\|patch\|delete\)\|@router\.\(get\|post\|put\|patch\|delete\)" \
-  "${TARGET_DIR:-.}" --include="*.py" -l
+  "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
+  --include="*.py" -l
 
 # Express / Next.js (TypeScript/JavaScript)
 grep -r "router\.\(get\|post\|put\|patch\|delete\)\|app\.\(get\|post\|put\|patch\|delete\)" \
-  "${TARGET_DIR:-.}" --include="*.ts" --include="*.js" -l
+  "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
+  --include="*.ts" --include="*.js" -l
 
 # Go (net/http / Gin / Echo)
 grep -r "http\.HandleFunc\|r\.GET\|r\.POST\|e\.GET\|e\.POST" \
-  "${TARGET_DIR:-.}" --include="*.go" -l
+  "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
+  --include="*.go" -l
 ```
 
 ルートファイルを Read して各エンドポイントの詳細（メソッド・パス・ハンドラー・認証要否）を収集する。
@@ -204,11 +215,15 @@ find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
 # 外部サービス呼び出し
 grep -r "requests\.\|httpx\.\|axios\.\|fetch(\|http\.Get\|http\.Post" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l
 
 # キャッシュ・キュー・DB クライアント
 grep -r "redis\.\|cache\.\|sqs\.\|rabbitmq\.\|kafka\." \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l
 ```
 
@@ -288,6 +303,8 @@ find "${TARGET_DIR:-.}" -maxdepth 5 -type f \
 
 grep -r "pytest\|unittest\|jest\|vitest\|rspec\|mocha" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.toml" --include="*.json" --include="*.yml" -l
 ```
 
@@ -296,6 +313,8 @@ grep -r "pytest\|unittest\|jest\|vitest\|rspec\|mocha" \
 ```bash
 grep -r "jwt\|bearer\|oauth\|session\|auth.*middleware" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l -i | head -10
 
 find "${TARGET_DIR:-.}" -maxdepth 3 \( -name "*.env*" -o -name ".env*" \) \
@@ -315,10 +334,14 @@ find "${TARGET_DIR:-.}" -maxdepth 3 -type f \
 ```bash
 grep -r "logging\.\|logger\.\|structlog\.\|winston\.\|zap\." \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 
 grep -r "prometheus\|opentelemetry\|datadog\|jaeger" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" \
   --include="*.toml" --include="*.json" -l | head -10
 ```
@@ -339,10 +362,14 @@ ls -1 "${TARGET_DIR:-.}"/.github/workflows/ 2>/dev/null || true
 ```bash
 grep -r "class.*Error\|class.*Exception\|errors\.New\|fmt\.Errorf" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 
 grep -r "exception_handler\|errorHandler\|middleware.*error" \
   "${TARGET_DIR:-.}" \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
+  --exclude-dir=build --exclude-dir=__pycache__ --exclude-dir=.venv \
   --include="*.py" --include="*.ts" --include="*.go" -l | head -10
 ```
 
