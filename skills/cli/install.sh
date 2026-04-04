@@ -88,6 +88,11 @@ if [ "$MODE" = "global" ]; then
   echo "  /running-cost <設計書>        # 運用コスト試算"
   echo "  /proposal <顧客サマリー>      # 提案書"
   echo "  /req-investigate <設計書>     # 規約調査レポート"
+  echo ""
+  echo "  # 開発ユーティリティ（任意のプロジェクトで使用可能）"
+  echo "  /repo-investigate [パス]             # リポジトリ構造・依存関係の調査"
+  echo "  /repo-investigate-design [パス]      # API設計・データフロー・Mermaid図"
+  echo "  /repo-investigate-full [パス]        # 上2スキルをワンショット実行"
 else
   echo "このプロジェクト（claude_docsディレクトリで起動した claude）で使えます:"
   echo ""
@@ -100,6 +105,11 @@ else
   echo "  /project:running-cost <設計書>        # 運用コスト試算"
   echo "  /project:proposal <顧客サマリー>      # 提案書"
   echo "  /project:req-investigate <設計書>     # 規約調査レポート"
+  echo ""
+  echo "  # 開発ユーティリティ（このプロジェクトで使用可能）"
+  echo "  /project:repo-investigate [パス]             # リポジトリ構造・依存関係の調査"
+  echo "  /project:repo-investigate-design [パス]      # API設計・データフロー・Mermaid図"
+  echo "  /project:repo-investigate-full [パス]        # 上2スキルをワンショット実行"
 fi
 echo ""
 echo "注意: スキルの実体（SKILL.md）は skills/<name>/SKILL.md に存在している必要があります。"
