@@ -73,12 +73,12 @@ Supported values: `ja`, `en`, `both`
 ls -1 "${TARGET_DIR:-.}"
 
 # パッケージマネージャー / ビルドツールを検出
-cat "${TARGET_DIR:-.}/package.json"        # Node.js
-cat "${TARGET_DIR:-.}/pyproject.toml"      # Python
-cat "${TARGET_DIR:-.}/go.mod"              # Go
-cat "${TARGET_DIR:-.}/Cargo.toml"          # Rust
-cat "${TARGET_DIR:-.}/pom.xml"             # Java/Maven
-cat "${TARGET_DIR:-.}/build.gradle"        # Java/Gradle
+[ -f "${TARGET_DIR:-.}/package.json" ]   && cat "${TARGET_DIR:-.}/package.json"   # Node.js
+[ -f "${TARGET_DIR:-.}/pyproject.toml" ] && cat "${TARGET_DIR:-.}/pyproject.toml" # Python
+[ -f "${TARGET_DIR:-.}/go.mod" ]         && cat "${TARGET_DIR:-.}/go.mod"         # Go
+[ -f "${TARGET_DIR:-.}/Cargo.toml" ]     && cat "${TARGET_DIR:-.}/Cargo.toml"     # Rust
+[ -f "${TARGET_DIR:-.}/pom.xml" ]        && cat "${TARGET_DIR:-.}/pom.xml"        # Java/Maven
+[ -f "${TARGET_DIR:-.}/build.gradle" ]   && cat "${TARGET_DIR:-.}/build.gradle"   # Java/Gradle
 ```
 
 **Output:**
