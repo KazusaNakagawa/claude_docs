@@ -73,12 +73,12 @@ Supported values: `ja`, `en`, `both`
 ls -1 "${TARGET_DIR:-.}"
 
 # パッケージマネージャー / ビルドツールを検出
-[ -f "${TARGET_DIR:-.}/package.json" ]   && cat "${TARGET_DIR:-.}/package.json"   # Node.js
-[ -f "${TARGET_DIR:-.}/pyproject.toml" ] && cat "${TARGET_DIR:-.}/pyproject.toml" # Python
-[ -f "${TARGET_DIR:-.}/go.mod" ]         && cat "${TARGET_DIR:-.}/go.mod"         # Go
-[ -f "${TARGET_DIR:-.}/Cargo.toml" ]     && cat "${TARGET_DIR:-.}/Cargo.toml"     # Rust
-[ -f "${TARGET_DIR:-.}/pom.xml" ]        && cat "${TARGET_DIR:-.}/pom.xml"        # Java/Maven
-[ -f "${TARGET_DIR:-.}/build.gradle" ]   && cat "${TARGET_DIR:-.}/build.gradle"   # Java/Gradle
+cat "${TARGET_DIR:-.}/package.json"        # Node.js
+cat "${TARGET_DIR:-.}/pyproject.toml"      # Python
+cat "${TARGET_DIR:-.}/go.mod"              # Go
+cat "${TARGET_DIR:-.}/Cargo.toml"          # Rust
+cat "${TARGET_DIR:-.}/pom.xml"             # Java/Maven
+cat "${TARGET_DIR:-.}/build.gradle"        # Java/Gradle
 ```
 
 **Output:**
@@ -138,9 +138,7 @@ find "${TARGET_DIR:-.}" -maxdepth 3 -type f \
 cat "${TARGET_DIR:-.}/package.json" | grep -A 100 '"dependencies"'
 
 # Python
-cat "${TARGET_DIR:-.}/pyproject.toml" \
-  || cat "${TARGET_DIR:-.}/requirements.txt" \
-  || cat "${TARGET_DIR:-.}/Pipfile"
+cat "${TARGET_DIR:-.}/pyproject.toml" || cat requirements.txt || cat Pipfile
 
 # Go
 cat "${TARGET_DIR:-.}/go.mod"
@@ -352,7 +350,7 @@ grep -r "prometheus\|opentelemetry\|datadog\|jaeger" \
 
 ```bash
 find "${TARGET_DIR:-.}" -maxdepth 4 \
-  \( -name "*.yml" -o -name "*.yaml" -o -name "Jenkinsfile" \) \
+  \( -name "*.yml" -o -name "*.yaml" \) \
   | grep -E '(\.github|\.gitlab|\.circleci|Jenkinsfile)' \
   | grep -v -E '(node_modules|\.git)' | head -10
 
