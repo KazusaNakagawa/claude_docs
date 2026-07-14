@@ -1,6 +1,6 @@
 ---
 name: repo-investigate
-description: Investigate repository structure, architecture, and dependencies
+description: Use when onboarding to or auditing an unfamiliar repository — investigates structure, architecture, and dependencies and writes a structured report
 argument-hint: "[target-path] [--lang en|ja|both]"
 allowed-tools: Glob, Grep, Read, Write, Bash(git:*), Bash(cat:*), Bash(ls:*), Bash(find:*), Bash(grep:*), Bash(sort:*), Bash(sed:*), Bash(uniq:*), Bash(head:*)
 ---
@@ -24,7 +24,7 @@ Investigate codebase structure, architecture overview, and dependency relationsh
 
 Parse `$ARGUMENTS` to extract the `--lang` flag and target path.
 
-```
+```text
 LANG_MODE = extract "--lang <value>" from $ARGUMENTS, default = "both"
 TARGET_DIR = remaining argument after removing --lang flag, default = "."
 ```
@@ -107,9 +107,7 @@ Analyze both external dependencies and internal module dependencies.
 cat "${TARGET_DIR:-.}/package.json" | grep -A 100 '"dependencies"'
 
 # Python
-cat "${TARGET_DIR:-.}/pyproject.toml" \
-  || cat "${TARGET_DIR:-.}/requirements.txt" \
-  || cat "${TARGET_DIR:-.}/Pipfile"
+cat "${TARGET_DIR:-.}/pyproject.toml" || cat requirements.txt || cat Pipfile
 
 # Go
 cat "${TARGET_DIR:-.}/go.mod"
@@ -141,7 +139,7 @@ grep -r "^import\|^from\|^require\|^use " "${TARGET_DIR:-.}" \
 
 Determine output paths based on LANG_MODE, then write reports using the Write tool.
 
-```
+```text
 If docs/ exists in TARGET_DIR:
   EN_FILE = "${TARGET_DIR}/docs/repo-investigation.en.md"
   JA_FILE = "${TARGET_DIR}/docs/repo-investigation.ja.md"

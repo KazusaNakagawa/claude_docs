@@ -1,345 +1,108 @@
 ---
 name: parallel-setup
-description: Setup tmux parallel development environment with git worktrees
+description: Use when the user wants to work multiple GitHub Issues concurrently — creates git worktrees per issue, opens a split-pane tmux session, and launches an independent Claude Code session running /start in each pane.
 argument-hint: "[worker-count]"
 allowed-tools: Bash(git:*), Bash(tmux:*), Bash(mkdir:*), Bash(gh:*)
 ---
 
 # Parallel Development Setup
 
-Setup tmux-based parallel development environment with git worktrees for concurrent feature development.
+Set up a tmux split-pane environment with one git worktree + Claude Code session per GitHub Issue.
 
 ## Usage
 
 ```bash
-/parallel-setup          # Interactive mode - asks for issue numbers
-/parallel-setup 3        # Setup 3 workers (asks for issue numbers)
+/parallel-setup          # asks for worker count and issue numbers
+/parallel-setup 3        # 3 workers (asks for issue numbers)
 ```
-
-## What This Does
-
-1. **Ask for Issue numbers** - Prompts you to specify which GitHub Issues each worker should handle
-2. **Fetch latest develop** - Updates the develop branch from remote
-3. **Create git worktrees** - Creates separate working directories for each feature branch
-4. **Setup tmux session with pane split** - Creates a tmux session with all workers visible in split panes
-5. **Launch Claude Code** - Starts an independent Claude Code session in each pane
-6. **Auto-start development** - Runs `/start <issue-number>` in each worker
-
-**Default layout: Pane split mode** - All workers displayed simultaneously in one window for easy monitoring.
 
 ## Workflow
 
-**Implementation Note:** This workflow implements the **pane split layout** verified through testing. All workers are displayed simultaneously in split panes within a single tmux window.
+### 1. Gather inputs
 
-### 1. Ask User for Issue Numbers
+Use AskUserQuestion:
+- Worker count (default 2; 2-3 fit best in split panes, 4 max → 2x2 grid)
+- Issue number per worker — verify each with `gh issue view <N>`
 
-Use AskUserQuestion to gather:
-- How many workers needed (default: 2, maximum: 4 recommended)
-- Issue number for each worker
-- Verify issues exist using `gh issue view`
+Workers must target **different files/features** — same-file edits across
+worktrees cause merge conflicts.
 
-**Important:** Fewer workers (2-3) provide better visibility in split-pane mode. For 4+ workers, consider if the screen space will be sufficient.
-
-### 2. Fetch and Update Develop
+### 2. Update base branch
 
 ```bash
 git fetch origin
-git checkout develop
-git pull origin develop
+BASE=$(git branch -r | grep -qE 'origin/dev$' && echo dev || echo develop)
+git checkout "$BASE" && git pull origin "$BASE"
 ```
 
-### 3. Create Git Worktrees
-
-For each worker (example with 3 workers handling issues #100, #101, #102):
+### 3. Create worktrees (one per worker)
 
 ```bash
-# Get issue title for branch naming
-issue_title=$(gh issue view 100 --json title -q .title)
-
-# Sanitize and truncate title (UTF-8 safe)
-# - Convert to lowercase
-# - Replace non-alphanumeric with hyphens
-# - Limit to 30 characters using awk (respects UTF-8)
-# - Remove trailing hyphens
-sanitized_title=$(echo "$issue_title" |
-  tr '[:upper:]' '[:lower:]' |
-  sed 's/[^a-z0-9]/-/g' |
-  sed 's/--*/-/g' |
-  awk '{print substr($0, 1, 30)}' |
-  sed 's/-$//')
-
-branch_name="feature/issue-100-${sanitized_title}"
-
-# Create worktree
-git worktree add ~/worktree-worker1 -b "$branch_name" develop
-git worktree add ~/worktree-worker2 -b "feature/issue-101-..." develop
-git worktree add ~/worktree-worker3 -b "feature/issue-102-..." develop
+issue_title=$(gh issue view <N> --json title -q .title)
+sanitized_title=$(echo "$issue_title" | tr '[:upper:]' '[:lower:]' |
+  sed 's/[^a-z0-9]/-/g; s/--*/-/g' | awk '{print substr($0, 1, 30)}' | sed 's/-$//')
+git worktree add ~/worktree-worker<i> -b "feature/issue-<N>-${sanitized_title}" "$BASE"
 ```
 
-### 4. Create tmux Session with Pane Split Layout
+Note: each worktree is a full working-copy — check disk space for 3+ workers.
 
-**IMPORTANT: Use the verified approach that worked in testing**
+### 4. Create tmux session with split panes
 
 ```bash
-# Step 1: Create session with appropriate dimensions for split panes
-# Configurable dimensions (defaults work well for most screens)
-TMUX_WIDTH=${TMUX_WIDTH:-200}
-TMUX_HEIGHT=${TMUX_HEIGHT:-50}
-
-tmux new-session -d -s parallel-dev -x $TMUX_WIDTH -y $TMUX_HEIGHT
+tmux new-session -d -s parallel-dev -x "${TMUX_WIDTH:-200}" -y "${TMUX_HEIGHT:-50}"
 tmux rename-window -t parallel-dev:0 workers
 
-# Step 2: Setup Worker 1 (pane 0)
+# pane 0 = worker 1; split once per additional worker
 tmux send-keys -t parallel-dev:workers.0 'cd ~/worktree-worker1' Enter
-sleep 1  # Wait for directory change
-
-# Step 3: Split pane for Worker 2
 tmux split-window -h -t parallel-dev:workers
-
-# Step 4: Setup Worker 2 (pane 1)
 tmux send-keys -t parallel-dev:workers.1 'cd ~/worktree-worker2' Enter
-sleep 1  # Wait for directory change
+# repeat split-window + send-keys for worker 3, 4 …
 
-# Step 5: For 3+ workers, continue splitting
-# Worker 3 example:
-# tmux split-window -h -t parallel-dev:workers
-# tmux send-keys -t parallel-dev:workers.2 'cd ~/worktree-worker3' Enter
-# sleep 1
-
-# Step 6: Adjust layout based on worker count
-# 2 workers: even-horizontal (side-by-side)
+# layout: 2 workers → even-horizontal, 3+ → tiled
 tmux select-layout -t parallel-dev:workers even-horizontal
 
-# 3+ workers: tiled (grid layout)
-# tmux select-layout -t parallel-dev:workers tiled
-
-# Step 7: Verify pane directories (optional but recommended)
-echo "Verifying pane directories:"
+# verify each pane is in the right directory before proceeding
 tmux list-panes -t parallel-dev:workers -F "pane #{pane_index}: #{pane_current_path}"
 ```
 
-**Layout patterns by worker count:**
+### 5. Launch Claude Code and start development
+
+Timing matters: wait between steps so keystrokes land after Claude is ready.
+Delays are configurable via `CLAUDE_STARTUP_DELAY` (default 10) and
+`POST_RENAME_DELAY` (default 3); increase them if commands get swallowed.
 
 ```bash
-# 2 workers: Side-by-side
-tmux select-layout -t parallel-dev:workers even-horizontal
+# per pane i:
+tmux send-keys -t parallel-dev:workers.<i> 'claude' Enter
+sleep 2
 
-# 3 workers: Tiled (uses available space efficiently)
-tmux select-layout -t parallel-dev:workers tiled
-
-# 4 workers: Perfect 2x2 grid
-tmux select-layout -t parallel-dev:workers tiled
+# after all panes launched:
+sleep "${CLAUDE_STARTUP_DELAY:-10}"
+tmux send-keys -t parallel-dev:workers.<i> '/rename worker<i+1>-issue<N>' Enter
+sleep "${POST_RENAME_DELAY:-3}"
+tmux send-keys -t parallel-dev:workers.<i> '/start <N>' Enter
 ```
 
-### 5. Launch Claude Code in Each Pane
+### 6. Report to user
 
-**CRITICAL: Each pane must launch Claude independently in its own directory**
-
-```bash
-# Worker 1 (pane 0)
-tmux send-keys -t parallel-dev:workers.0 'claude' Enter
-sleep 2  # Wait for Claude to start
-
-# Worker 2 (pane 1)
-tmux send-keys -t parallel-dev:workers.1 'claude' Enter
-sleep 2  # Wait for Claude to start
-
-# Worker 3 (pane 2) - if applicable
-# tmux send-keys -t parallel-dev:workers.2 'claude' Enter
-# sleep 2
-
-echo "✓ Claude Code launched in all panes"
-```
-
-**Pane targeting reference:**
-- `parallel-dev:workers.0` = Worker 1 (first pane)
-- `parallel-dev:workers.1` = Worker 2 (second pane)
-- `parallel-dev:workers.2` = Worker 3 (third pane)
-- etc.
-
-### 6. Rename Claude Sessions (Optional)
-
-After Claude Code sessions are ready, rename them for easier identification:
-
-```bash
-# Configurable startup delay (default: 10 seconds)
-# Adjust CLAUDE_STARTUP_DELAY if Claude takes longer/shorter to initialize on your system
-CLAUDE_STARTUP_DELAY=${CLAUDE_STARTUP_DELAY:-10}
-
-# Wait for Claude sessions to be fully initialized
-echo "Waiting ${CLAUDE_STARTUP_DELAY}s for Claude sessions to initialize..."
-sleep $CLAUDE_STARTUP_DELAY
-
-# Rename each Claude session in its pane
-# Example with 2 workers handling issues #79 and #80:
-tmux send-keys -t parallel-dev:workers.0 '/rename worker1-issue79' Enter
-tmux send-keys -t parallel-dev:workers.1 '/rename worker2-issue80' Enter
-
-# For 3 workers:
-# tmux send-keys -t parallel-dev:workers.2 '/rename worker3-issue102' Enter
-
-echo "✓ Claude sessions renamed"
-```
-
-**Note:** If Claude doesn't start in time, increase `CLAUDE_STARTUP_DELAY`:
-```bash
-CLAUDE_STARTUP_DELAY=15 /parallel-setup 2
-```
-
-### 7. Manual Development Start
-
-After attaching to the tmux session, manually run `/start` in each worker pane with the corresponding issue number:
-
-- Worker 0: `/start 79`
-- Worker 1: `/start 80`
-- Worker 2 (if using 3 workers): `/start 102`
-
-> **Note:** `/start` creates a feature branch with `git checkout -b`. Since `parallel-setup` already created the worktree branch via `git worktree add -b`, running `/start` after the worktree is set up would fail. Start development manually in each worker pane instead.
-
-### 8. Display Instructions for User
-
-Show summary and instructions to the user:
-
-```bash
-# Example with 2 workers:
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "✓ Parallel Development Environment Ready!"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo ""
-echo "Created 2 workers in split-pane layout:"
-echo "  📍 Worker 1: Issue #79 (~/worktree-worker1) [pane 0]"
-echo "  📍 Worker 2: Issue #80 (~/worktree-worker2) [pane 1]"
-echo ""
-echo "All workers are visible simultaneously!"
-echo ""
-echo "┌─────────────────────────────────────────────┐"
-echo "│ Worker 1 (#79)    │ Worker 2 (#80)         │"
-echo "│ [Claude running]  │ [Claude running]       │"
-echo "└─────────────────────────────────────────────┘"
-echo ""
-echo "To view the workers:"
-echo "  1. Open a NEW terminal tab/window"
-echo "  2. Run: tmux attach -t parallel-dev"
-echo ""
-echo "tmux Keybindings:"
-echo "  Ctrl+b ←→      : Move between panes"
-echo "  Ctrl+b o       : Next pane"
-echo "  Ctrl+b q       : Show pane numbers"
-echo "  Ctrl+b z       : Zoom/unzoom pane (focus on one)"
-echo "  Ctrl+b d       : Detach (workers keep running)"
-echo ""
-echo "When done, cleanup with:"
-echo "  /parallel-cleanup"
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-```
+Summarize concisely: worker → issue → worktree path table, then:
+- Attach from a new terminal: `tmux attach -t parallel-dev`
+- Key bindings: `Ctrl+b ←→` move panes, `Ctrl+b z` zoom, `Ctrl+b d` detach
+- When done: `/parallel-cleanup`
 
 ## Prerequisites
 
-- tmux is installed (`brew install tmux` on macOS)
-- GitHub CLI (`gh`) is authenticated
-- On `develop` branch or able to switch to it
-- No existing `parallel-dev` tmux session (or use `/parallel-cleanup` first)
-- Terminal size: Minimum 200x50 recommended for comfortable split-pane viewing
-  - Default dimensions: 200 columns × 50 rows
-  - Customize via environment variables: `TMUX_WIDTH` and `TMUX_HEIGHT`
-  - Example: `TMUX_WIDTH=250 TMUX_HEIGHT=60 /parallel-setup 2`
-
-## Important Notes
-
-### Avoid File Conflicts
-
-Workers should work on different features/files:
-- **Good**: worker1=auth, worker2=AWS Lambda, worker3=UI components
-- **Bad**: All workers editing the same service file
-
-### Disk Space
-
-Each worktree creates a full copy of the working directory:
-- 3 workers ≈ 3x repository size
-- Use `/parallel-cleanup` when done to reclaim space
-
-### Session Management
-
-```bash
-# List active tmux sessions
-tmux list-sessions
-
-# List git worktrees
-git worktree list
-
-# Attach to existing session
-tmux attach -t parallel-dev
-
-# Kill session (use /parallel-cleanup instead)
-tmux kill-session -t parallel-dev
-```
-
-## Example Scenarios
-
-### Scenario 1: Three Independent Features
-
-```bash
-/parallel-setup 3
-# Enter issues: 100 (auth), 101 (payment), 102 (dashboard)
-# Each worker develops independently
-```
-
-### Scenario 2: iOS + AWS + Docs
-
-```bash
-/parallel-setup 3
-# Worker 1: iOS app feature
-# Worker 2: AWS CDK changes
-# Worker 3: Documentation updates
-```
-
-### Scenario 3: Bug Fixes
-
-```bash
-/parallel-setup 2
-# Worker 1: Critical bug #85
-# Worker 2: UI bug #86
-```
-
-## Cleanup
-
-When development is complete, use `/parallel-cleanup` to:
-- Remove git worktrees
-- Kill tmux session
-- Return to main repository
+- tmux installed, `gh` authenticated
+- No existing `parallel-dev` session (run `/parallel-cleanup` first if so)
+- Terminal ≥ 200x50 recommended (`TMUX_WIDTH`/`TMUX_HEIGHT` to customize)
 
 ## Troubleshooting
 
-### "worktree already exists"
-
-```bash
-git worktree list
-git worktree remove ~/worktree-worker1
-```
-
-### "tmux session already exists"
-
-```bash
-tmux kill-session -t parallel-dev
-# Or use: /parallel-cleanup
-```
-
-### Worker stuck or unresponsive
-
-```bash
-# Detach and re-attach
-tmux detach
-tmux attach -t parallel-dev
-
-# Or kill and restart specific window
-tmux kill-window -t parallel-dev:worker1-issue100
-# Then recreate manually
-```
+- **"worktree already exists"** → `git worktree list`, then `git worktree remove <path>`
+- **"tmux session already exists"** → `/parallel-cleanup` (or `tmux kill-session -t parallel-dev`)
+- **Pane didn't receive a command** → re-send with `tmux send-keys`; raise the delay env vars
 
 ## See Also
 
-- `/parallel-cleanup` - Clean up parallel development environment
-- `/start` - Start development from GitHub Issue (used by each worker)
-- `/review-fix` - Review and fix PR feedback (used by each worker)
+- `/parallel-cleanup` — tear down worktrees + session
+- `/start` — the per-worker development workflow
